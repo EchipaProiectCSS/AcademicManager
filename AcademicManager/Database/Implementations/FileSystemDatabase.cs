@@ -2,6 +2,7 @@
 {
     using System;
     using Interfaces.Internal;
+    using Internal;
 
     public class FileSystemDatabase : Database
     {

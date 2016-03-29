@@ -1,4 +1,4 @@
-﻿namespace Database.Implementations
+﻿namespace Database.Implementations.Internal
 {
     using Interfaces;
     using Interfaces.Internal;

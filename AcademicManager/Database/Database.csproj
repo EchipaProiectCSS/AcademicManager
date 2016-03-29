@@ -39,9 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Implementations\Database.cs" />
-    <Compile Include="Implementations\FileLoader.cs" />
+    <Compile Include="Implementations\Internal\Database.cs" />
+    <Compile Include="Implementations\Internal\FileLoader.cs" />
     <Compile Include="Implementations\FileSystemDatabase.cs" />
+    <Compile Include="Implementations\Internal\Utility\Instructions.cs" />
+    <Compile Include="Implementations\Internal\Utility\Operators.cs" />
     <Compile Include="Interfaces\IDatabase.cs" />
     <Compile Include="Interfaces\IDatabaseManager.cs" />
     <Compile Include="Interfaces\Internal\ILoader.cs" />
