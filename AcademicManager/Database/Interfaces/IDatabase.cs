@@ -4,6 +4,10 @@
 
     public interface IDatabase
     {
+        string ConnectionString { get; set; }
+
+        string Name { get; set; }
+
         /// <summary>
         /// Load and run the script file located at the specified location. 
         /// Will throw if the script is not found or it has errors.

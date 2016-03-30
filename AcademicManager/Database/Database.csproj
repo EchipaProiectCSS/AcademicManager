@@ -40,14 +40,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementations\Internal\Database.cs" />
+    <Compile Include="Implementations\Internal\DatabaseEngine.cs" />
     <Compile Include="Implementations\Internal\FileLoader.cs" />
     <Compile Include="Implementations\FileSystemDatabase.cs" />
+    <Compile Include="Implementations\Internal\ScriptParser.cs" />
     <Compile Include="Implementations\Internal\Utility\Instructions.cs" />
     <Compile Include="Implementations\Internal\Utility\Operators.cs" />
     <Compile Include="Interfaces\IDatabase.cs" />
     <Compile Include="Interfaces\IDatabaseManager.cs" />
+    <Compile Include="Implementations\FileSystemDatabaseManager.cs" />
+    <Compile Include="Interfaces\Internal\IDatabaseEngine.cs" />
     <Compile Include="Interfaces\Internal\ILoader.cs" />
     <Compile Include="Interfaces\Internal\IQueryResult.cs" />
+    <Compile Include="Interfaces\Internal\IScriptInstruction.cs" />
+    <Compile Include="Interfaces\Internal\IScriptParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
