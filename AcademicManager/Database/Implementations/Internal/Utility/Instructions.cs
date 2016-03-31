@@ -7,7 +7,7 @@
         public static readonly string Go = "go";
         public static readonly string Use = "use";
         public static readonly string CreateSchema = "create schema";
-        public static readonly string PrimaryKey = "PK";
+        public static readonly string PrimaryKey = "pk";
         public static readonly string InsertInto = "insert into";
         public static readonly string Values = "values";
         public static readonly string Select = "select";
