@@ -6,17 +6,17 @@
 
     public class FileSystemDatabaseManager : IDatabaseManager<FileSystemDatabase>
     {
-        public FileSystemDatabase Open(string connectionString)
+        public FileSystemDatabase Open(string filePath)
         {
-            if (!Directory.Exists(connectionString))
+            if (!Directory.Exists(filePath))
             {
                 throw new FileNotFoundException("The database does not exist at the provided location.");
             }
 
             var db = new FileSystemDatabase(new FileLoader(), new ScriptParser(), new DatabaseEngine())
             {
-                ConnectionString = connectionString.TrimEnd('\\').Substring(0, connectionString.LastIndexOf('\\')),
-                Name = connectionString.TrimEnd('\\').Substring(connectionString.LastIndexOf('\\'))
+                ConnectionString = ExtractConnectionString(filePath),
+                Name = ExtractDatabaseName(filePath)
             };
 
             return db;
@@ -42,6 +42,16 @@
             };
 
             return db;
+        }
+
+        private static string ExtractDatabaseName(string connectionString)
+        {
+            return connectionString.TrimEnd('\\').Substring(connectionString.LastIndexOf('\\') + 1);
+        }
+
+        private static string ExtractConnectionString(string connectionString)
+        {
+            return connectionString.TrimEnd('\\').Substring(0, connectionString.LastIndexOf('\\'));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace DataBase.UnitTests
 {
+    using System.IO;
     using Database.Implementations;
     using Database.Interfaces;
     using NUnit.Framework;
@@ -10,19 +11,36 @@
         [SetUp]
         public void Initialize()
         {
+            if (Directory.Exists(DatabaseFilePath))
+            {
+                Directory.Delete(DatabaseFilePath, true);
+            }
+
             databaseManager = new FileSystemDatabaseManager();
         }
 
-        private const string ScriptFilePath = @"Sample\Script1.sql";
-        private const string DatabaseFilePath = @"D:\Databases";
+        [TearDown]
+        public void TearDown()
+        {
+            Directory.Delete(DatabaseFilePath, true);
+        }
+
+        private const string DatabaseFilePath = @"C:\Databases";
         private const string DatabaseName = "SampleDatabase";
+        private readonly string databaseConnectionString = Path.Combine(DatabaseFilePath, DatabaseName);
         private IDatabaseManager<FileSystemDatabase> databaseManager;
 
         [Test]
-        public void ShouldTestSomething()
+        public void ShouldOpenACreatedDatabaseSuccesfully()
         {
-            var database = databaseManager.Create(DatabaseFilePath, DatabaseName);
-            database.RunScriptFile(ScriptFilePath);
+            var expectedDatabase = databaseManager.Create(DatabaseFilePath, DatabaseName);
+
+            Assert.IsNotNull(expectedDatabase);
+
+            var actualDatabase = databaseManager.Open(databaseConnectionString);
+
+            Assert.AreEqual(expectedDatabase.ConnectionString, actualDatabase.ConnectionString);
+            Assert.AreEqual(expectedDatabase.Name, actualDatabase.Name);
         }
     }
 }
