@@ -15,17 +15,17 @@
         {
             if (loader == null)
             {
-                throw new ArgumentNullException("loader");
+                throw new ArgumentNullException("loader", "Must provide an instance of ILoader.");
             }
 
             if (scriptParser == null)
             {
-                throw new ArgumentNullException("scriptParser");
+                throw new ArgumentNullException("scriptParser", "Must provide an instance of IScriptParser.");
             }
 
             if (databaseEngine == null)
             {
-                throw new ArgumentNullException("databaseEngine");
+                throw new ArgumentNullException("databaseEngine", "Must provide an instance of IDatabaseEngine.");
             }
 
             fileLoader = loader;
