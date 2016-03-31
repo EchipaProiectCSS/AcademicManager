@@ -16,6 +16,8 @@
         public static readonly string Update = "update";
         public static readonly string Set = "set";
         public static readonly string Delete = "delete";
-        public static readonly string Drop = "drop";
+        public static readonly string DropTable = "drop table";
+        public static readonly string DropSchema = "drop schema";
+        public static readonly string DropDatabase = "drop database";
     }
 }
