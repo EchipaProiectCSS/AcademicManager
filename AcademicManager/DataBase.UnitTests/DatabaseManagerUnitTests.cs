@@ -31,7 +31,7 @@
         private IDatabaseManager<FileSystemDatabase> databaseManager;
 
         [Test]
-        public void ShouldOpenACreatedDatabaseSuccesfully()
+        public void ShouldSuccesfullyOpenACreatedDatabase()
         {
             var expectedDatabase = databaseManager.Create(DatabaseFilePath, DatabaseName);
 
