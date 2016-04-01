@@ -8,7 +8,9 @@
     {
         public FileSystemDatabase Open(string filePath)
         {
-            if (!Directory.Exists(filePath))
+            var directoryName = Path.GetDirectoryName(filePath);
+
+            if (!Directory.Exists(directoryName ?? string.Empty))
             {
                 throw new FileNotFoundException("The database does not exist at the provided location.");
             }
