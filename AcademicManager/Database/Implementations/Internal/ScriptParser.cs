@@ -31,10 +31,10 @@
 
             var oneLineInstructions = EnsureOneAtomicInstructionPerLine(instructions);
 
-            return MergeMultilineInstructionsOnOneLine(oneLineInstructions);
+            return MergeMultilineInstructionsIntoOneLine(oneLineInstructions);
         }
 
-        private static List<string> MergeMultilineInstructionsOnOneLine(IReadOnlyList<string> lines)
+        private static List<string> MergeMultilineInstructionsIntoOneLine(IReadOnlyList<string> lines)
         {
             var changes = new Dictionary<int, List<string>>();
             for (var i = 0; i < lines.Count; i++)
