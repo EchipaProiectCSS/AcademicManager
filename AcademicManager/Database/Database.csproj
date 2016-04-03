@@ -39,6 +39,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\Internal\Instructions\CreateDatabaseInstruction.cs" />
+    <Compile Include="Implementations\Internal\Instructions\GoInstruction.cs" />
+    <Compile Include="Implementations\Internal\Instructions\UseDatabaseInstruction.cs" />
+    <Compile Include="Implementations\Internal\Instructions\CreateSchemaInstruction.cs" />
+    <Compile Include="Implementations\Internal\Instructions\CreateTableInstruction.cs" />
+    <Compile Include="Implementations\Internal\Instructions\UpdateInstruction.cs" />
+    <Compile Include="Implementations\Internal\Instructions\DropTableInstruction.cs" />
+    <Compile Include="Implementations\Internal\Instructions\DropSchemaInstruction.cs" />
+    <Compile Include="Implementations\Internal\Instructions\DropDatabaseInstruction.cs" />
+    <Compile Include="Implementations\Internal\Instructions\DeleteInstruction.cs" />
+    <Compile Include="Implementations\Internal\Instructions\InsertInstruction.cs" />
+    <Compile Include="Implementations\Internal\Instructions\SelectInstruction.cs" />
     <Compile Include="Implementations\Internal\Database.cs" />
     <Compile Include="Implementations\Internal\DatabaseEngine.cs" />
     <Compile Include="Implementations\Internal\FileLoader.cs" />
