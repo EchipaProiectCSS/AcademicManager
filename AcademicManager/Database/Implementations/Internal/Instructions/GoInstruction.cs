@@ -3,13 +3,16 @@
     using Interfaces;
     using Interfaces.Internal;
 
-    public class GoInstruction : IScriptInstruction
+    public class GoInstruction : BaseInstruction, IScriptInstruction
     {
+        public GoInstruction(string instruction) : base(instruction)
+        {
+        }
+
         public IDatabase Database { get; set; }
 
         public void Run()
         {
-
         }
     }
 }

@@ -6,13 +6,13 @@
     [TestFixture]
     public class ScriptParserUnitTests
     {
-        private ScriptParser scriptParser;
-
         [SetUp]
         public void Initialize()
         {
             scriptParser = new ScriptParser();
         }
+
+        private ScriptParser scriptParser;
 
         [Test]
         public void ShouldParseSelectInstruction()

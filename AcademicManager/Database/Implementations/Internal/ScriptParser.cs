@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Interfaces.Internal;
+    using Utility;
 
     public class ScriptParser : IScriptParser
     {
@@ -13,19 +14,29 @@
             return ConvertToInstructions(oneLineStringIntructions);
         }
 
-        private static ICollection<IScriptInstruction> ConvertToInstructions(List<string> oneLineStringIntructions)
+        private static ICollection<IScriptInstruction> ConvertToInstructions(
+            IEnumerable<string> oneLineStringIntructions)
         {
-            var result = new List<IScriptInstruction>();
+            var instructions = new List<IScriptInstruction>();
 
-            foreach (var intruction in oneLineStringIntructions)
+            foreach (var instruction in oneLineStringIntructions)
             {
+                foreach (var factory in InstructionFactories.Factories)
+                {
+                    if (!factory.IsMatch(instruction))
+                    {
+                        continue;
+                    }
 
+                    instructions.Add(factory.Create(instruction));
+                    break;
+                }
             }
 
-            return result;
+            return instructions;
         }
 
-        private static List<string> CleanScript(string scriptBody)
+        private static IEnumerable<string> CleanScript(string scriptBody)
         {
             var instructions = RemoveEmptyLinesAndCommentLines(scriptBody);
 
@@ -34,7 +45,7 @@
             return MergeMultilineInstructionsIntoOneLine(oneLineInstructions);
         }
 
-        private static List<string> MergeMultilineInstructionsIntoOneLine(IReadOnlyList<string> lines)
+        private static IEnumerable<string> MergeMultilineInstructionsIntoOneLine(IReadOnlyList<string> lines)
         {
             var changes = new Dictionary<int, List<string>>();
             for (var i = 0; i < lines.Count; i++)
@@ -62,7 +73,7 @@
             return result;
         }
 
-        private static List<string> EnsureOneAtomicInstructionPerLine(List<string> lines)
+        private static List<string> EnsureOneAtomicInstructionPerLine(IReadOnlyList<string> lines)
         {
             var changes = new Dictionary<int, string[]>();
 

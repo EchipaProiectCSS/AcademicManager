@@ -39,6 +39,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\Internal\Domain\Column.cs" />
+    <Compile Include="Implementations\Internal\Domain\Table.cs" />
+    <Compile Include="Implementations\Internal\Domain\Row.cs" />
+    <Compile Include="Implementations\Internal\Factories\UseDatabaseInstructionFactory.cs" />
+    <Compile Include="Implementations\Internal\Factories\UpdateInstructionFactory.cs" />
+    <Compile Include="Implementations\Internal\Factories\SelectInstructionFactory.cs" />
+    <Compile Include="Implementations\Internal\Factories\InsertInstructionFactory.cs" />
+    <Compile Include="Implementations\Internal\Factories\GoInstructionFactory.cs" />
+    <Compile Include="Implementations\Internal\Factories\DropTableInstructionFactory.cs" />
+    <Compile Include="Implementations\Internal\Factories\DropSchemaInstructionFactory.cs" />
+    <Compile Include="Implementations\Internal\Factories\DropDatabaseInstructionFactory.cs" />
+    <Compile Include="Implementations\Internal\Factories\DeleteInstructionFactory.cs" />
+    <Compile Include="Implementations\Internal\Factories\CreateTableInstructionFactory.cs" />
+    <Compile Include="Implementations\Internal\Factories\CreateSchemaInstructionFactory.cs" />
+    <Compile Include="Implementations\Internal\Factories\CreateDatabaseInstructionFactory.cs" />
+    <Compile Include="Implementations\Internal\Factories\InstructionFactory.cs" />
+    <Compile Include="Implementations\Internal\Instructions\BaseInstruction.cs" />
     <Compile Include="Implementations\Internal\Instructions\CreateDatabaseInstruction.cs" />
     <Compile Include="Implementations\Internal\Instructions\GoInstruction.cs" />
     <Compile Include="Implementations\Internal\Instructions\UseDatabaseInstruction.cs" />
@@ -56,13 +73,16 @@
     <Compile Include="Implementations\Internal\FileLoader.cs" />
     <Compile Include="Implementations\FileSystemDatabase.cs" />
     <Compile Include="Implementations\Internal\ScriptParser.cs" />
+    <Compile Include="Implementations\Internal\Utility\InstructionFactories.cs" />
     <Compile Include="Implementations\Internal\Utility\Instructions.cs" />
     <Compile Include="Implementations\Internal\Utility\Operators.cs" />
     <Compile Include="Interfaces\IDatabase.cs" />
     <Compile Include="Interfaces\IDatabaseManager.cs" />
     <Compile Include="Implementations\FileSystemDatabaseManager.cs" />
     <Compile Include="Interfaces\Internal\IDatabaseEngine.cs" />
+    <Compile Include="Interfaces\Internal\IFactory.cs" />
     <Compile Include="Interfaces\Internal\ILoader.cs" />
+    <Compile Include="Interfaces\Internal\IMatch.cs" />
     <Compile Include="Interfaces\Internal\IQueryResult.cs" />
     <Compile Include="Interfaces\Internal\IScriptInstruction.cs" />
     <Compile Include="Interfaces\Internal\IScriptParser.cs" />
