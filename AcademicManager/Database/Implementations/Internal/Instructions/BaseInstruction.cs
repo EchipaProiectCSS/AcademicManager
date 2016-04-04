@@ -1,8 +1,10 @@
 ﻿namespace Database.Implementations.Internal.Instructions
 {
     using System;
+    using Interfaces;
+    using Interfaces.Internal;
 
-    public abstract class BaseInstruction
+    public abstract class BaseInstruction : IScriptInstruction
     {
         private readonly string instructionContent;
 
@@ -21,5 +23,8 @@
         {
             get { return instructionContent; }
         }
+
+        public IDatabase Database { get; set; }
+        public abstract void Run();
     }
 }

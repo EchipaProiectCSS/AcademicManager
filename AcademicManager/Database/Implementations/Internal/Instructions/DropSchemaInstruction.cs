@@ -1,17 +1,12 @@
 ﻿namespace Database.Implementations.Internal.Instructions
 {
-    using Interfaces;
-    using Interfaces.Internal;
-
-    public class DropSchemaInstruction : BaseInstruction, IScriptInstruction
+    public class DropSchemaInstruction : BaseInstruction
     {
         public DropSchemaInstruction(string instruction) : base(instruction)
         {
         }
 
-        public IDatabase Database { get; set; }
-
-        public void Run()
+        public override void Run()
         {
         }
     }
