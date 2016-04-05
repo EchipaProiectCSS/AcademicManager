@@ -5,7 +5,18 @@
 
     public abstract class Database : IDatabase
     {
-        public string ConnectionString { get; set; }
+        private string connectionString = string.Empty;
+
+        public string ConnectionString
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(connectionString)
+                    ? connectionString = @"C:\Databases"
+                    : connectionString;
+            }
+            set { connectionString = value; }
+        }
 
         public string Name { get; set; }
 

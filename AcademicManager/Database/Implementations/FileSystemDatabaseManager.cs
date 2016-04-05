@@ -26,7 +26,13 @@
 
         public FileSystemDatabase Create(string connectionString, string name)
         {
-            var dbFilePath = Path.Combine(connectionString, name);
+            var db = new FileSystemDatabase(new FileLoader(), new ScriptParser(), new DatabaseEngine())
+            {
+                ConnectionString = connectionString,
+                Name = name
+            };
+
+            var dbFilePath = Path.Combine(db.ConnectionString, db.Name);
 
             if (!Directory.Exists(dbFilePath))
             {
@@ -34,14 +40,8 @@
             }
             else
             {
-                throw new IOException("A database with the provided name already exists.");
+                throw new IOException(string.Format("The {0} database already exists at {1}.", db.Name, db.ConnectionString));
             }
-
-            var db = new FileSystemDatabase(new FileLoader(), new ScriptParser(), new DatabaseEngine())
-            {
-                ConnectionString = connectionString,
-                Name = name
-            };
 
             return db;
         }
