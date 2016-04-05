@@ -49,7 +49,7 @@
 
         private bool TableExists(string tableName)
         {
-            var tableFilePath = Path.Combine(Database.ConnectionString, tableName + ".txt");
+            var tableFilePath = Path.Combine(Database.ConnectionString, Database.Name, tableName + ".txt");
 
             return File.Exists(tableFilePath);
         }
