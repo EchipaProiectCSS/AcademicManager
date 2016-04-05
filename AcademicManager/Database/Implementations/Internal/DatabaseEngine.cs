@@ -2,15 +2,20 @@
 {
     using System;
     using System.Collections.Generic;
-    using Interfaces.Internal;
     using Interfaces;
+    using Interfaces.Internal;
+
     public class DatabaseEngine : IDatabaseEngine
     {
         public IDatabase Database { get; set; }
 
         public void Execute(ICollection<IScriptInstruction> instructions)
         {
-            throw new NotImplementedException();
+            foreach (var instruction in instructions)
+            {
+                instruction.Database = Database;
+                instruction.Run();
+            }
         }
 
         public IQueryResult Query(IScriptInstruction query)

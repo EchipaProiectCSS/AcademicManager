@@ -31,6 +31,7 @@
             fileLoader = loader;
             this.scriptParser = scriptParser;
             this.databaseEngine = databaseEngine;
+            this.databaseEngine.Database = this;
         }
 
         public override void RunScriptFile(string scriptFilePath)

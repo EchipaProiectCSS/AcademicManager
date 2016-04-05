@@ -19,5 +19,6 @@
         public static readonly string DropTable = "drop table";
         public static readonly string DropSchema = "drop schema";
         public static readonly string DropDatabase = "drop database";
+        public static readonly char StatementTerminator = ';';
     }
 }

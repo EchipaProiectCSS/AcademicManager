@@ -57,6 +57,8 @@
     <Compile Include="Implementations\Internal\Factories\InstructionFactory.cs" />
     <Compile Include="Implementations\Internal\Instructions\BaseInstruction.cs" />
     <Compile Include="Implementations\Internal\Instructions\CreateDatabaseInstruction.cs" />
+    <Compile Include="Implementations\Internal\Utility\TableAlreadyExistsException.cs" />
+    <Compile Include="Implementations\Internal\Utility\DuplicateColumnNameException.cs" />
     <Compile Include="Implementations\Internal\Instructions\GoInstruction.cs" />
     <Compile Include="Implementations\Internal\Instructions\UseDatabaseInstruction.cs" />
     <Compile Include="Implementations\Internal\Instructions\CreateSchemaInstruction.cs" />

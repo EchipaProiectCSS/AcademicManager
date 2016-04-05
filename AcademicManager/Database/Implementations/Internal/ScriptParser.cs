@@ -67,7 +67,11 @@
             {
                 if (changes.ContainsKey(i))
                 {
-                    result[i] = string.Join(" ", changes[i]);
+                    result.Add(string.Join(" ", changes[i]));
+                }
+                else
+                {
+                    result.Add(lines[i]);
                 }
             }
             return result;
@@ -79,9 +83,13 @@
 
             for (var i = 0; i < lines.Count; i++)
             {
-                var splits = lines[i].Split(';');
+                var splits = lines[i].Split(';').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
                 if (splits.Length >= 2)
                 {
+                    for (var j = 0; j < splits.Length; j++)
+                    {
+                        splits[j] = splits[j] + ';';
+                    }
                     changes[i] = splits;
                 }
             }
