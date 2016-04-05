@@ -36,7 +36,7 @@
                     string.Format("The database {0} already has a table with the name {1}", Database.Name, tableName));
             }
         }
-
+         
         private void CreateTable(string tableName, IEnumerable<string> columnNames)
         {
             var tableFilePath = Path.Combine(Database.ConnectionString, Database.Name, tableName + ".txt");
