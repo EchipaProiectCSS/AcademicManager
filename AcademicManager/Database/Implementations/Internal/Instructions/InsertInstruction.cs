@@ -81,7 +81,7 @@
             WriteValuesToTable(tableName, values);
         }
 
-        private void WriteValuesToTable(string tableName, IEnumerable<string> values)
+        private void WriteValuesToTable(string tableName, List<string> values)
         {
             var tableFilePath = Path.Combine(Database.ConnectionString, Database.Name, tableName + ".txt");
 
@@ -89,6 +89,11 @@
             {
                 throw new FileNotFoundException(string.Format("Could not find file for table {0}, in database {1}",
                     tableName, Database.Name));
+            }
+
+            for (int i = 0; i < values.Count; i++)
+            {
+                values[i] = values[i].Replace("'", string.Empty);
             }
 
             File.AppendAllLines(tableFilePath, new List<string> {string.Join(", ", values)});
