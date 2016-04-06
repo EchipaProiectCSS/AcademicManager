@@ -41,10 +41,16 @@
 
             Assert.IsTrue(File.Exists(expectedTableFileLocation));
 
-            var expectedTableFileContents = "id PK, username, password";
+            var expectedTableFileContents = "id PK, username, password\r\n";
             var actualTableFileContents = File.ReadAllText(expectedTableFileLocation);
 
             Assert.AreEqual(expectedTableFileContents, actualTableFileContents);
+
+            script = @"insert into admins (id PK, username, password) values ('0', 'John Doe', '1234');";
+            database.Execute(script);
+
+            script = @"insert into admins (id PK, username) values ('0', 'John Doe');";
+            database.Execute(script);
         }
     }
 }

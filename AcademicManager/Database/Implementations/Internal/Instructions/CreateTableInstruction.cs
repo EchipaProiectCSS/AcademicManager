@@ -43,7 +43,7 @@
 
             using (var file = File.CreateText(tableFilePath))
             {
-                file.Write(string.Join(", ", columnNames));
+                file.WriteLine(string.Join(", ", columnNames));
             }
         }
 
