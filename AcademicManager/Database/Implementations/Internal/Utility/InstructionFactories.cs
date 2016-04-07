@@ -10,13 +10,10 @@
             <IFactory<IScriptInstruction, string>>
         {
             new CreateDatabaseInstructionFactory(),
-            new CreateSchemaInstructionFactory(),
             new CreateTableInstructionFactory(),
             new DeleteInstructionFactory(),
             new DropDatabaseInstructionFactory(),
-            new DropSchemaInstructionFactory(),
             new DropTableInstructionFactory(),
-            new GoInstructionFactory(),
             new InsertInstructionFactory(),
             new SelectInstructionFactory(),
             new UpdateInstructionFactory(),
