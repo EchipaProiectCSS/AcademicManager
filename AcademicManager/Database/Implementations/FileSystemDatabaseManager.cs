@@ -3,6 +3,7 @@
     using System.IO;
     using Interfaces;
     using Internal;
+    using Internal.Parsers;
 
     public class FileSystemDatabaseManager : IDatabaseManager<FileSystemDatabase>
     {
@@ -15,7 +16,7 @@
                 throw new FileNotFoundException("The database does not exist at the provided location.");
             }
 
-            var db = new FileSystemDatabase(new FileLoader(), new ScriptParser(), new DatabaseEngine())
+            var db = new FileSystemDatabase(new FileLoader(), new InstructionParser(), new QueryParser(), new DatabaseEngine())
             {
                 ConnectionString = ExtractConnectionString(filePath),
                 Name = ExtractDatabaseName(filePath)
@@ -26,7 +27,7 @@
 
         public FileSystemDatabase Create(string connectionString, string name)
         {
-            var db = new FileSystemDatabase(new FileLoader(), new ScriptParser(), new DatabaseEngine())
+            var db = new FileSystemDatabase(new FileLoader(), new InstructionParser(), new QueryParser(), new DatabaseEngine())
             {
                 ConnectionString = connectionString,
                 Name = name

@@ -4,6 +4,10 @@
 
     public class Row
     {
+        public Row()
+        {
+            Values = new Dictionary<string, string>();
+        }
         /// <summary>
         /// Key = column name
         /// Value = value for the column

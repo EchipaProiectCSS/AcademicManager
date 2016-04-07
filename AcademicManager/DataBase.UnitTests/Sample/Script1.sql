@@ -17,6 +17,7 @@ create table admins (id PK, username, password);
 insert into students (id, firstName, lastName) values ('0', 'John', 'Doe');
 
 select * from students where id = '0';
+select firstName, lastName from students where id = '0' and firstName = 'John';
 
 update students set firstName = 'Jane' where firstName = 'John';
 

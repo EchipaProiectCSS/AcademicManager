@@ -40,8 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementations\Internal\Domain\Column.cs" />
+    <Compile Include="Implementations\Internal\Domain\SelectResult.cs" />
     <Compile Include="Implementations\Internal\Domain\Table.cs" />
     <Compile Include="Implementations\Internal\Domain\Row.cs" />
+    <Compile Include="Implementations\Internal\Factories\QueryFactory.cs" />
     <Compile Include="Implementations\Internal\Factories\UseDatabaseInstructionFactory.cs" />
     <Compile Include="Implementations\Internal\Factories\UpdateInstructionFactory.cs" />
     <Compile Include="Implementations\Internal\Factories\SelectInstructionFactory.cs" />
@@ -54,6 +56,9 @@
     <Compile Include="Implementations\Internal\Factories\InstructionFactory.cs" />
     <Compile Include="Implementations\Internal\Instructions\BaseInstruction.cs" />
     <Compile Include="Implementations\Internal\Instructions\CreateDatabaseInstruction.cs" />
+    <Compile Include="Implementations\Internal\Parsers\QueryParser.cs" />
+    <Compile Include="Implementations\Internal\Queries\BaseQuery.cs" />
+    <Compile Include="Implementations\Internal\Utility\QueryFactories.cs" />
     <Compile Include="Implementations\Internal\Utility\TableAlreadyExistsException.cs" />
     <Compile Include="Implementations\Internal\Utility\DuplicateColumnNameException.cs" />
     <Compile Include="Implementations\Internal\Instructions\UseDatabaseInstruction.cs" />
@@ -63,12 +68,12 @@
     <Compile Include="Implementations\Internal\Instructions\DropDatabaseInstruction.cs" />
     <Compile Include="Implementations\Internal\Instructions\DeleteInstruction.cs" />
     <Compile Include="Implementations\Internal\Instructions\InsertInstruction.cs" />
-    <Compile Include="Implementations\Internal\Instructions\SelectInstruction.cs" />
+    <Compile Include="Implementations\Internal\Queries\SelectQuery.cs" />
     <Compile Include="Implementations\Internal\Database.cs" />
     <Compile Include="Implementations\Internal\DatabaseEngine.cs" />
     <Compile Include="Implementations\Internal\FileLoader.cs" />
     <Compile Include="Implementations\FileSystemDatabase.cs" />
-    <Compile Include="Implementations\Internal\ScriptParser.cs" />
+    <Compile Include="Implementations\Internal\Parsers\InstructionParser.cs" />
     <Compile Include="Implementations\Internal\Utility\InstructionFactories.cs" />
     <Compile Include="Implementations\Internal\Utility\Instructions.cs" />
     <Compile Include="Implementations\Internal\Utility\Operators.cs" />
@@ -77,11 +82,13 @@
     <Compile Include="Implementations\FileSystemDatabaseManager.cs" />
     <Compile Include="Interfaces\Internal\IDatabaseEngine.cs" />
     <Compile Include="Interfaces\Internal\IFactory.cs" />
+    <Compile Include="Interfaces\Internal\IQueryParser.cs" />
     <Compile Include="Interfaces\Internal\ILoader.cs" />
     <Compile Include="Interfaces\Internal\IMatch.cs" />
+    <Compile Include="Interfaces\Internal\IQueryInstruction.cs" />
     <Compile Include="Interfaces\Internal\IQueryResult.cs" />
     <Compile Include="Interfaces\Internal\IScriptInstruction.cs" />
-    <Compile Include="Interfaces\Internal\IScriptParser.cs" />
+    <Compile Include="Interfaces\Internal\IInstructionParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

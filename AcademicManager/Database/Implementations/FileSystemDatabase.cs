@@ -9,18 +9,25 @@
     {
         private readonly IDatabaseEngine databaseEngine;
         private readonly ILoader fileLoader;
-        private readonly IScriptParser scriptParser;
+        private readonly IInstructionParser instructionParser;
+        private readonly IQueryParser queryParser;
 
-        public FileSystemDatabase(ILoader loader, IScriptParser scriptParser, IDatabaseEngine databaseEngine)
+        public FileSystemDatabase(ILoader loader, IInstructionParser instructionParser, IQueryParser queryParser,
+            IDatabaseEngine databaseEngine)
         {
             if (loader == null)
             {
                 throw new ArgumentNullException("loader", "Must provide an instance of ILoader.");
             }
 
-            if (scriptParser == null)
+            if (instructionParser == null)
             {
-                throw new ArgumentNullException("scriptParser", "Must provide an instance of IScriptParser.");
+                throw new ArgumentNullException("instructionParser", "Must provide an instance of IInstructionParser.");
+            }
+
+            if (queryParser == null)
+            {
+                throw new ArgumentNullException("queryParser", "Must provide an instance of IQueryParser.");
             }
 
             if (databaseEngine == null)
@@ -29,7 +36,8 @@
             }
 
             fileLoader = loader;
-            this.scriptParser = scriptParser;
+            this.instructionParser = instructionParser;
+            this.queryParser = queryParser;
             this.databaseEngine = databaseEngine;
             this.databaseEngine.Database = this;
         }
@@ -48,7 +56,7 @@
 
         public override void Execute(string scriptBody)
         {
-            var instructions = scriptParser.Parse(scriptBody);
+            var instructions = instructionParser.Parse(scriptBody);
 
             if (instructions == null || instructions.Count <= 0)
             {
@@ -60,7 +68,7 @@
 
         public override IQueryResult Query(string scriptBody)
         {
-            var query = scriptParser.Parse(scriptBody).Single();
+            var query = queryParser.Parse(scriptBody).Single();
 
             return databaseEngine.Query(query);
         }

@@ -1,17 +1,17 @@
 ﻿namespace Database.Implementations.Internal.Factories
 {
     using System.Text.RegularExpressions;
-    using Instructions;
+    using Queries;
     using Utility;
 
-    public class SelectInstructionFactory : InstructionFactory<SelectInstruction, string>
+    public class SelectInstructionFactory : QueryFactory<SelectQuery, string>
     {
         private static readonly Regex Pattern = new Regex(string.Format("{0}.*", Instructions.Select),
             RegexOptions.IgnoreCase);
 
-        public override SelectInstruction Create(string input)
+        public override SelectQuery Create(string input)
         {
-            return new SelectInstruction(input);
+            return new SelectQuery(input);
         }
 
         public override bool IsMatch(string input)

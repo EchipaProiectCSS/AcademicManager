@@ -4,7 +4,13 @@
 
     public class Table
     {
+        public Table()
+        {
+            Header = new List<Column>();
+            Rows = new List<Row>();
+        }
+
         public List<Column> Header { get; set; }
-        public ICollection<Row> Rows { get; set; }
+        public List<Row> Rows { get; set; }
     }
 }

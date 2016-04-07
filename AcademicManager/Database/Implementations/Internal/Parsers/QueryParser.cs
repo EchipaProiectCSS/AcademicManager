@@ -1,4 +1,4 @@
-﻿namespace Database.Implementations.Internal
+﻿namespace Database.Implementations.Internal.Parsers
 {
     using System;
     using System.Collections.Generic;
@@ -6,22 +6,22 @@
     using Interfaces.Internal;
     using Utility;
 
-    public class ScriptParser : IScriptParser
+    public class QueryParser : IQueryParser
     {
-        public ICollection<IScriptInstruction> Parse(string scriptBody)
+        public ICollection<IQueryInstruction> Parse(string scriptBody)
         {
             var oneLineStringIntructions = CleanScript(scriptBody);
             return ConvertToInstructions(oneLineStringIntructions);
         }
 
-        private static ICollection<IScriptInstruction> ConvertToInstructions(
+        private static ICollection<IQueryInstruction> ConvertToInstructions(
             IEnumerable<string> oneLineStringIntructions)
         {
-            var instructions = new List<IScriptInstruction>();
+            var instructions = new List<IQueryInstruction>();
 
             foreach (var instruction in oneLineStringIntructions)
             {
-                foreach (var factory in InstructionFactories.Factories)
+                foreach (var factory in QueryFactories.Factories)
                 {
                     if (!factory.IsMatch(instruction))
                     {

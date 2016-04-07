@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public interface IScriptParser
+    public interface IInstructionParser
     {
         /// <summary>
         /// Parses a script and createas appropriate script instructions for the database engine.

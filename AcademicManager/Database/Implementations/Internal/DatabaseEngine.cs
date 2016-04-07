@@ -1,6 +1,5 @@
 ﻿namespace Database.Implementations.Internal
 {
-    using System;
     using System.Collections.Generic;
     using Interfaces;
     using Interfaces.Internal;
@@ -18,9 +17,10 @@
             }
         }
 
-        public IQueryResult Query(IScriptInstruction query)
+        public IQueryResult Query(IQueryInstruction query)
         {
-            throw new NotImplementedException();
+            query.Database = Database;
+            return query.Execute();
         }
     }
 }

@@ -15,7 +15,6 @@
             new DropDatabaseInstructionFactory(),
             new DropTableInstructionFactory(),
             new InsertInstructionFactory(),
-            new SelectInstructionFactory(),
             new UpdateInstructionFactory(),
             new UseDatabaseInstructionFactory()
         };

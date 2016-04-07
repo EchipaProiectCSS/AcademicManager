@@ -1,6 +1,6 @@
 ﻿namespace DataBase.UnitTests
 {
-    using Database.Implementations.Internal;
+    using Database.Implementations.Internal.Parsers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -9,10 +9,10 @@
         [SetUp]
         public void Initialize()
         {
-            scriptParser = new ScriptParser();
+            scriptParser = new InstructionParser();
         }
 
-        private ScriptParser scriptParser;
+        private InstructionParser scriptParser;
 
         [Test]
         public void ShouldParseSelectInstruction()
