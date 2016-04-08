@@ -40,39 +40,95 @@
             var columnNamesFromSelect = ExtractColumnNamesFromQuery();
             var conditionsFromQuery = ExtractConditionsFromQuery();
 
-            var tableHeader = LoadTableHeader(tableName);
+            var table = LoadTable(tableName);
+
+            if (conditionsFromQuery == null)
+            {
+                result.Result = table;
+                return result;
+            }
 
             foreach (var columnName in columnNamesFromSelect)
             {
-                if (!tableHeader.Contains(columnName))
+                if (columnName.Equals("*"))
+                {
+                    break;
+                }
+
+                if (!table.Header.Any(c => c.Name.Equals(columnName, StringComparison.OrdinalIgnoreCase)))
                 {
                     throw new InvalidOperationException(string.Format("Table {0} does not have the {1} column.",
                         tableName, columnName));
                 }
             }
 
-            var columnToValue = new Dictionary<string, string>();
+            var resultTable = new Table {Header = table.Header};
 
-            for (var i = 0; i < columnNamesFromSelect.Count(); i++)
+            foreach (var row in table.Rows)
             {
-                //columnToValue[columnNamesFromSelect[i]] = conditionsFromQuery[i];
+                var isMatch = true;
+                foreach (var conditionRow in conditionsFromQuery.Rows)
+                {
+                    foreach (var pair in conditionRow.Values)
+                    {
+                        if (!string.IsNullOrEmpty(pair.Value) && row.Values[pair.Key] != pair.Value)
+                        {
+                            isMatch = false;
+                            break;
+                        }
+                    }
+
+                    if (isMatch)
+                    {
+                        resultTable.Rows.Add(row);
+                        break;
+                    }
+                }
             }
 
-            var values = new List<string>();
+            result.Result = resultTable;
+            return result;
+        }
 
-            foreach (var header in tableHeader)
+        private Table LoadTable(string tableName)
+        {
+            var result = new Table();
+
+            var tableFilePath = Path.Combine(Database.ConnectionString, Database.Name, tableName + ".txt");
+            var tableLines = File.ReadAllLines(tableFilePath).ToList();
+            var headerLine = tableLines.First();
+
+            tableLines = tableLines.Skip(1).ToList();
+
+            var columns = headerLine.Split(',').Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).ToList();
+
+            result.Header =
+                columns.Select(
+                    c =>
+                        new Column
+                        {
+                            IsPrimaryKey = c.ToLower().Contains(Instructions.PrimaryKey),
+                            Name = c.Replace(Instructions.PrimaryKey, string.Empty).Trim()
+                        }).ToList();
+
+            foreach (var line in tableLines)
             {
-                if (columnToValue.ContainsKey(header))
+                var values = line.Split(',').Select(s => s.Trim()).ToList();
+                var row = new Row();
+                for (var i = 0; i < columns.Count; i++)
                 {
-                    values.Add(columnToValue[header]);
+                    if (values.Count < i)
+                    {
+                        row.Values[columns[i]] = string.Empty;
+                    }
+                    else
+                    {
+                        row.Values[columns[i]] = values[i];
+                    }
                 }
-                else
-                {
-                    values.Add(string.Empty);
-                }
-            }
 
-            WriteValuesToTable(tableName, values);
+                result.Rows.Add(row);
+            }
 
             return result;
         }
@@ -93,13 +149,13 @@
 
             queryCopy = queryCopy.Substring(startIndex, length);
 
-            var equalityConditionsRegex = new Regex(@"(\w+)( *)=( *)(\w+)", RegexOptions.IgnoreCase);
+            var equalityConditionsRegex = new Regex(@"(\w+)( *)=( *)'([\w ]+)'", RegexOptions.IgnoreCase);
 
             var res = equalityConditionsRegex.Match(queryCopy);
             var equalityConditions = new List<string>();
             while (res.Success)
             {
-                equalityConditions.Add(res.Value.Replace(" ", string.Empty));
+                equalityConditions.Add(res.Value.Trim());
                 res = res.NextMatch();
             }
 
@@ -118,7 +174,7 @@
                 .Split(new[] {Operators.Equal}, StringSplitOptions.RemoveEmptyEntries);
 
             var row = new Row();
-            row.Values.Add(cond[0], cond[1].Replace("'", string.Empty));
+            row.Values.Add(cond[0].Trim(), cond[1].Trim().Replace("'", string.Empty));
 
             result.Rows.Add(row);
 
@@ -132,46 +188,26 @@
                     row = new Row();
                 }
 
-                row.Values.Add(cond[0], cond[1].Replace("'", string.Empty));
+                row.Values.Add(cond[0].Trim(), cond[1].Trim().Replace("'", string.Empty));
+
+                result.Rows.Add(row);
+            }
+            if (equalityConditions.Count >= 2)
+            {
+                cond = equalityConditions.Last()
+                    .Split(new[] {Operators.Equal}, StringSplitOptions.RemoveEmptyEntries);
+
+                if (quantifiers.Last().Equals(Operators.Or))
+                {
+                    row = new Row();
+                }
+
+                row.Values.Add(cond[0].Trim(), cond[1].Trim().Replace("'", string.Empty));
 
                 result.Rows.Add(row);
             }
 
-            cond = equalityConditions.Last()
-                .Split(new[] {Operators.Equal}, StringSplitOptions.RemoveEmptyEntries);
-
-            row = new Row();
-            row.Values.Add(cond[0], cond[1].Replace("'", string.Empty));
-
-            result.Rows.Add(row);
-
             return result;
-        }
-
-        private void WriteValuesToTable(string tableName, List<string> values)
-        {
-            var tableFilePath = Path.Combine(Database.ConnectionString, Database.Name, tableName + ".txt");
-
-            if (!File.Exists(tableFilePath))
-            {
-                throw new FileNotFoundException(string.Format("Could not find file for table {0}, in database {1}",
-                    tableName, Database.Name));
-            }
-
-            for (var i = 0; i < values.Count; i++)
-            {
-                values[i] = values[i].Replace("'", string.Empty);
-            }
-
-            File.AppendAllLines(tableFilePath, new List<string> {string.Join(", ", values)});
-        }
-
-        private List<string> LoadTableHeader(string tableName)
-        {
-            var tableFilePath = Path.Combine(Database.ConnectionString, Database.Name, tableName + ".txt");
-            var headerLine = File.ReadLines(tableFilePath).First();
-
-            return headerLine.Split(',').Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).ToList();
         }
 
         private bool TableExists(string tableName)
@@ -212,7 +248,7 @@
             }
             else
             {
-                length = queryCopy.IndexOf(Instructions.StatementTerminator);
+                length = queryCopy.IndexOf(Instructions.StatementTerminator) -startIndex;
             }
 
             var tableName = queryCopy.Substring(startIndex, length).Trim(' ');
