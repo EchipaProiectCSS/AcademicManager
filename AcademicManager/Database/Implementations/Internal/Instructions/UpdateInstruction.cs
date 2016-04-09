@@ -38,25 +38,35 @@
 
             foreach (var row in table.Rows)
             {
-                var isMatch = true;
-                foreach (var conditionRow in conditionsFromQuery.Rows)
+                if (conditionsFromQuery != null)
                 {
-                    foreach (var pair in conditionRow.Values)
+                    var isMatch = true;
+                    foreach (var conditionRow in conditionsFromQuery.Rows)
                     {
-                        if (!string.IsNullOrEmpty(pair.Value) && row.Values[pair.Key] != pair.Value)
+                        foreach (var pair in conditionRow.Values)
                         {
-                            isMatch = false;
+                            if (!string.IsNullOrEmpty(pair.Value) && row.Values[pair.Key] != pair.Value)
+                            {
+                                isMatch = false;
+                                break;
+                            }
+                        }
+
+                        if (isMatch)
+                        {
+                            foreach (var updatedValue in updateRow.Values)
+                            {
+                                row.Values[updatedValue.Key] = updatedValue.Value;
+                            }
                             break;
                         }
                     }
-
-                    if (isMatch)
+                }
+                else
+                {
+                    foreach (var updatedValue in updateRow.Values)
                     {
-                        foreach (var updatedValue in updateRow.Values)
-                        {
-                            row.Values[updatedValue.Key] = updatedValue.Value;
-                        }
-                        break;
+                        row.Values[updatedValue.Key] = updatedValue.Value;
                     }
                 }
             }
@@ -67,11 +77,6 @@
         private Row ExtractUpdateRow()
         {
             var queryCopy = string.Copy(Instruction);
-
-            if (!queryCopy.Contains(Instructions.Where))
-            {
-                return null;
-            }
 
             var startIndex = queryCopy.IndexOf(Instructions.Set, StringComparison.OrdinalIgnoreCase) +
                              Instructions.Set.Length;
