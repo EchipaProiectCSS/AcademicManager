@@ -19,9 +19,9 @@ namespace InputOutputManagement
             
             IKernel kernel = new StandardKernel(new NinjectCommon());
 
-            var student = kernel.GetService(typeof(IStudent));
+            var student = kernel.GetService(typeof(IStudentRepository));
 
-            Application.Run(new Form1((IStudent)student));
+            Application.Run(new Form1((IStudentRepository)student));
         }
     }
 }

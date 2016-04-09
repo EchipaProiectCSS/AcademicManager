@@ -5,8 +5,12 @@ namespace InputOutputManagement
 {
     public partial class Form1 : Form
     {
-        public Form1(IStudent student)
+        private readonly IStudentRepository studentRepository;
+
+        public Form1(IStudentRepository studentRepository)
         {
+            this.studentRepository = studentRepository;
+
             InitializeComponent();
         }
     }
