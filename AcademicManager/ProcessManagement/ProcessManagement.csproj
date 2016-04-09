@@ -43,10 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Implementations\Repository.cs" />
-    <Compile Include="Implementations\Student.cs" />
-    <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Interfaces\IStudent.cs" />
+    <Compile Include="DOs\ClassDo.cs" />
+    <Compile Include="DOs\StudentStatusDo.cs" />
+    <Compile Include="DOs\StudentDO.cs" />
+    <Compile Include="Helper\AutoMapper.cs" />
+    <Compile Include="Helper\Queries.cs" />
+    <Compile Include="Implementations\DatabaseModel.cs" />
+    <Compile Include="Implementations\StudentRepository.cs" />
+    <Compile Include="Interfaces\IDatabaseModel.cs" />
+    <Compile Include="Interfaces\IStudentRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
