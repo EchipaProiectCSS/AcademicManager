@@ -60,6 +60,9 @@
             Assert.IsNotNull(result);
 
             Assert.AreEqual(3, result.Result.Rows.Count);
+
+            script = @"delete from admins where id = '0';";
+            database.Execute(script);
         }
     }
 }

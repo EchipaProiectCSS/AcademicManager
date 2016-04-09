@@ -10,6 +10,7 @@
             Rows = new List<Row>();
         }
 
+        public string Name { get; set; }
         public List<Column> Header { get; set; }
         public List<Row> Rows { get; set; }
     }

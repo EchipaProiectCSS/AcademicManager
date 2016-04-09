@@ -15,7 +15,7 @@
         {
             if (!query.Contains(Instructions.From))
             {
-                throw new ArgumentException("Must specify the table from which to select.");
+                throw new ArgumentException("Must specify the table from where to select.");
             }
         }
 
