@@ -64,8 +64,23 @@
             script = @"delete from admins where id = '0';";
             database.Execute(script);
 
-
             script = @"update admins set password = 'new password' where username = 'John Doe';";
+            database.Execute(script);
+
+
+            script = @"drop table admins;";
+            database.Execute(script);
+
+            script = @"drop database SampleDatabase;";
+            database.Execute(script);
+
+            script = @"create database SampleDatabase2;";
+            database.Execute(script);
+
+            script = @"use SampleDatabase2;";
+            database.Execute(script);
+
+            script = @"create table admins (id, username, password);";
             database.Execute(script);
         }
     }

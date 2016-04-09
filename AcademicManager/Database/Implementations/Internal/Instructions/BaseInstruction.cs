@@ -3,6 +3,7 @@
     using System;
     using Interfaces;
     using Interfaces.Internal;
+    using Utility;
 
     public abstract class BaseInstruction : IScriptInstruction
     {
@@ -14,6 +15,11 @@
             {
                 throw new ArgumentNullException("instruction",
                     "Must provide instruction body.");
+            }
+
+            if (!instruction.EndsWith(Instructions.StatementTerminator.ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ArgumentException("Instruction must end with ';'.");
             }
 
             instructionContent = instruction;

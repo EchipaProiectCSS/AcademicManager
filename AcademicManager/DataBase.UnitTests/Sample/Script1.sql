@@ -4,10 +4,10 @@
 --instructions end with ';'
 
 --could also be a full path to the location of the database, including the dabatase name
-create database 'AcademicManagerDatabase';
+create database AcademicManagerDatabase;
 
 --could also be a full path to the location of the database, including the dabatase name
-use 'AcademicManagerDatabase';
+use AcademicManagerDatabase;
 
 create table students (id, firstName, lastName);
 create table grades (id, studentId, course, value);
@@ -24,5 +24,5 @@ update students set firstName = 'Jane' where firstName = 'John';
 
 delete from students where id = '0';
 
-drop table 'students';
-drop database 'AcademicManagerDatabase';
+drop table students;
+drop database AcademicManagerDatabase;

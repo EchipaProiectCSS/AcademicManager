@@ -6,7 +6,13 @@
 
     public class DatabaseEngine : IDatabaseEngine
     {
-        public IDatabase Database { get; set; }
+        private static IDatabase database;
+
+        public IDatabase Database
+        {
+            get { return database; }
+            set { database = value; }
+        }
 
         public void Execute(ICollection<IScriptInstruction> instructions)
         {
