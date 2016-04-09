@@ -63,6 +63,10 @@
 
             script = @"delete from admins where id = '0';";
             database.Execute(script);
+
+
+            script = @"update admins set password = 'new password' where username = 'John Doe';";
+            database.Execute(script);
         }
     }
 }
