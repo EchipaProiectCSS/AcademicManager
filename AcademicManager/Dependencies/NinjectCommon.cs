@@ -1,6 +1,4 @@
-﻿using Database.Implementations;
-using Database.Interfaces;
-using Ninject.Modules;
+﻿using Ninject.Modules;
 using ProcessManagement.Implementations;
 using ProcessManagement.Interfaces;
 
@@ -10,9 +8,8 @@ namespace Dependencies
     {
         public override void Load()
         {
-            Bind<IStudent>().To<Student>();
-            Bind<IDatabase>().To<FileSystemDatabase>();
-            Bind<IDatabaseManager<IDatabase>>().To<FileSystemDatabaseManager>();
+            Bind<IStudentRepository>().To<StudentRepository>();
+            Bind<IDatabaseModel>().To<DatabaseModel>();
         }
     }
 }
