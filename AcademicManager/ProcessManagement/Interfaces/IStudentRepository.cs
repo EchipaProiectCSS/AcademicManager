@@ -5,6 +5,12 @@ namespace ProcessManagement.Interfaces
 {
     public interface IStudentRepository
     {
-        List<StudentDO> GetAll();
+        List<StudentDo> GetAll();
+
+        StudentDo Get(int studentId);
+
+        void Update(StudentDo student);
+
+        void Insert(StudentDo student);
     }
 }

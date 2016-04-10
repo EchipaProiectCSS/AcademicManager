@@ -4,10 +4,14 @@ namespace ProcessManagement.DOs
 {
     public class StudentStatusDo
     {
-        public List<ClassDo> Classes { get; set; }
+        public int Id { get; set; }
+
+        public int StudentId { get; set; }
 
         public int Credits { get; set; }
 
         public int ECTS { get; set; }
+
+        public int Year { get; set; }
     }
 }

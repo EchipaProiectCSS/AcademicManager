@@ -10,7 +10,7 @@ namespace ProcessManagement.Helper
         private readonly object dataDo;
         private readonly Dictionary<string, string> row;
 
-        public AutoMapper(Object dataDo, Dictionary<string,string> row)
+        public AutoMapper(object dataDo, Dictionary<string,string> row)
         {
             this.dataDo = dataDo;
             this.row = row;

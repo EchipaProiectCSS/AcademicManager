@@ -2,7 +2,7 @@
 
 namespace ProcessManagement.DOs
 {
-    public class StudentDO
+    public class StudentDo
     {
         public int Id { get; set; }
 
@@ -15,8 +15,6 @@ namespace ProcessManagement.DOs
         public string LastName { get; set; }
 
         public string EmailAddress { get; set; }
-
-        public DateTime DateOfBirth { get; set; }
 
         public string LinkedStatus { get; set; }
     }
