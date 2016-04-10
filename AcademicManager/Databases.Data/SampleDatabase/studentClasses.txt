@@ -1,0 +1,3 @@
+Id, StudentId, Name, Promoted
+0, 0, Optimisation, Yes
+1, 1, ML, No
