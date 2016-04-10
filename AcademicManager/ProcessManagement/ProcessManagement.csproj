@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DOs\StudentClassesDo.cs" />
+    <Compile Include="DOs\StudentClassDo.cs" />
     <Compile Include="DOs\StudentStatusDo.cs" />
     <Compile Include="DOs\StudentDo.cs" />
     <Compile Include="Helper\AutoMapper.cs" />
@@ -51,11 +51,13 @@
     <Compile Include="Helper\Queries.cs" />
     <Compile Include="Helper\UpdateQuery.cs" />
     <Compile Include="Implementations\DatabaseModel.cs" />
+    <Compile Include="Implementations\StudentClassRepository.cs" />
     <Compile Include="Implementations\StudentRepository.cs" />
     <Compile Include="Implementations\StudentStatusRepository.cs" />
     <Compile Include="Interfaces\IDatabaseModel.cs" />
     <Compile Include="Interfaces\IStudentRepository.cs" />
     <Compile Include="Interfaces\IStudentStatusRepository.cs" />
+    <Compile Include="Interfaces\IStudentClassRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

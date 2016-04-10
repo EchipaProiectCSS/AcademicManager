@@ -11,8 +11,8 @@ namespace ProcessManagement.Interfaces
 
         List<StudentStatusDo> GetStudentStatuses(int studentId);
 
-        void Update(StudentStatusDo student);
+        void Update(StudentStatusDo studentStatus);
 
-        void Insert(StudentStatusDo student);
+        void Insert(StudentStatusDo studentStatus);
     }
 }

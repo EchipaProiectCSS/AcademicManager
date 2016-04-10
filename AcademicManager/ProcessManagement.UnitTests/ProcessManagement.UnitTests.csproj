@@ -50,6 +50,7 @@
     <Compile Include="AutoMapperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StudentRepositoryTests.cs" />
+    <Compile Include="StudentClassRepositoryTest.cs" />
     <Compile Include="StudentStatusRepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>

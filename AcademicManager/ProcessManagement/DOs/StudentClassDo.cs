@@ -1,6 +1,6 @@
 ﻿namespace ProcessManagement.DOs
 {
-    public class StudentClassesDo
+    public class StudentClassDo
     {
         public int Id { get; set; }
 

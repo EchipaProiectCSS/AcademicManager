@@ -12,7 +12,7 @@ namespace ProcessManagement.Implementations
 
         public DatabaseModel()
         {
-            this.databaseManager = new FileSystemDatabaseManager();
+            databaseManager = new FileSystemDatabaseManager();
 
             SetInstance();
         }

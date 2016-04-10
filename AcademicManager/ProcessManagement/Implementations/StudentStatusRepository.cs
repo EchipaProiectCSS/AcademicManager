@@ -34,7 +34,6 @@ namespace ProcessManagement.Implementations
 
         public StudentStatusDo Get(int statusId)
         {
-
             var query = database.Query(string.Format(Queries.GetStatusById, statusId));
 
             if (query.Result.Rows.Count == 0)
@@ -49,6 +48,20 @@ namespace ProcessManagement.Implementations
             return studentStatus;
         }
 
+        public void Update(StudentStatusDo studentStatus)
+        {
+            var query = UpdateQuery.Create("studentStatuses", studentStatus);
+
+            database.Execute(query);
+        }
+
+        public void Insert(StudentStatusDo studentStatus)
+        {
+            var query = InsertQuery.Create("studentStatuses", studentStatus);
+
+            database.Execute(query);
+        }
+
         private List<StudentStatusDo> GetStatusesFromQuery(IQueryResult query)
         {
             if (query.Result.Rows.Count == 0)
@@ -56,27 +69,12 @@ namespace ProcessManagement.Implementations
                 return null;
             }
 
-            var statuses = GetStatusesFromQueryResult(query);
+            var statuses = GetData(query);
 
             return statuses;
         }
 
-        public void Update(StudentStatusDo status)
-        {
-            var query = UpdateQuery.Create("studentStatuses", status);
-
-            database.Execute(query);
-        }
-
-        public void Insert(StudentStatusDo status)
-        {
-            var query = InsertQuery.Create("studentStatuses", status);
-
-            database.Execute(query);
-        }
-
-
-        private List<StudentStatusDo> GetStatusesFromQueryResult(IQueryResult query)
+        private List<StudentStatusDo> GetData(IQueryResult query)
         {
             List<StudentStatusDo> statuses = new List<StudentStatusDo>();
 
