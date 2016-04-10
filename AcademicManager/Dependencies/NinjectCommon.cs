@@ -9,6 +9,8 @@ namespace Dependencies
         public override void Load()
         {
             Bind<IStudentRepository>().To<StudentRepository>();
+            Bind<IStudentStatusRepository>().To<StudentStatusRepository>();
+            Bind<IStudentClassRepository>().To<StudentClassRepository>();
             Bind<IDatabaseModel>().To<DatabaseModel>();
         }
     }
