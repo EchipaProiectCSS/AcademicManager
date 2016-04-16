@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Database.Interfaces;
 using Database.Interfaces.Internal;
@@ -44,12 +45,22 @@ namespace ProcessManagement.Implementations
 
         public void Update(StudentDo student)
         {
+            if (student == null)
+            {
+                throw new Exception("An update with null value can't be made!");
+            }
+
             var query = UpdateQuery.Create("students", student);
 
             database.Execute(query);
         }
         public void Insert(StudentDo student)
         {
+            if (student == null)
+            {
+                throw new Exception("An insert with null value can't be made!");
+            }
+
             var query = InsertQuery.Create("students", student);
 
             database.Execute(query);

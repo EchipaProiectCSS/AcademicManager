@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using ProcessManagement.DOs;
 using ProcessManagement.Implementations;
 using ProcessManagement.Interfaces;
@@ -49,6 +50,14 @@ namespace ProcessManagement.UnitTests
         }
 
         [Test]
+        public void UpdateStudentNullDataTest()
+        {
+            var ex = Assert.Throws<Exception>(() => student.Update(null));
+
+            Assert.That(ex.Message, Is.EqualTo("An update with null value can't be made!"));
+        }
+
+        [Test]
         public void InsertStudentDataTest()
         {
             //TODO: not complete
@@ -60,6 +69,14 @@ namespace ProcessManagement.UnitTests
             };
 
             student.Insert(studentData);
+        }
+
+        [Test]
+        public void InsertStudentNullDataTest()
+        {
+            var ex = Assert.Throws<Exception>(() => student.Insert(null));
+
+            Assert.That(ex.Message, Is.EqualTo("An insert with null value can't be made!")); 
         }
     }
 }
