@@ -71,7 +71,7 @@
             // combStatus
             // 
             this.combStatus.FormattingEnabled = true;
-            this.combStatus.Location = new System.Drawing.Point(403, 59);
+            this.combStatus.Location = new System.Drawing.Point(414, 61);
             this.combStatus.Name = "combStatus";
             this.combStatus.Size = new System.Drawing.Size(121, 21);
             this.combStatus.TabIndex = 4;
