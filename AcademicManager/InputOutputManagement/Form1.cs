@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System;
+using System.IO;
+using InputOutputManagement.Models;
 
 namespace InputOutputManagement
 {
@@ -117,15 +119,25 @@ namespace InputOutputManagement
                     }
 
                 }
-            if (combPromoted.Text != "")
+            if (combPromoted.Text != "" || txtClass.Text != "")
             {
                 List<StudentClassDo> studentsClass = studentClassRepository.GetAll();
                 foreach(var studClass in studentsClass)
                 {
-                    if (combPromoted.Text.Equals(studClass.Promoted))
+                    var toAdd = true;
+                    if (combPromoted.Text != "" && !combPromoted.Text.Equals(studClass.Promoted))
+                    {
+                        toAdd = false;            
+                    }
+                    if (txtClass.Text != "" && !txtClass.Text.Equals(studClass.Name))
+                    {
+                        toAdd = false;
+                    }
+                    if (toAdd)
                     {
                         studentsClassToAdd.Add(studClass.StudentId);
                     }
+
                 }
             }
 
@@ -212,6 +224,7 @@ namespace InputOutputManagement
                         {
                             studView.Is_Promoted = studentsClass.First().Promoted;
                         }
+                        studView.Class = studentsClass.First().Name;
                     }
                    
                     if (studentsStatuses != null)
@@ -221,6 +234,7 @@ namespace InputOutputManagement
                     }
                     if (student != null)
                     {
+                        studView.ID = student.Id.ToString();
                         studView.First_Name = student.FirstName;
                         studView.Last_Name = student.LastName;
                         studView.Email_Address = student.EmailAddress;
@@ -240,7 +254,128 @@ namespace InputOutputManagement
 
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            InsertStudentClass insertStudentClass = new InsertStudentClass();
+            insertStudentClass.Show();
+
+        }
+
+        private void btnImport_Click(object sender, EventArgs e)
+        {
+            var result = openFileDialog1.ShowDialog();
+            var file = openFileDialog1.FileName;
+            if (result != DialogResult.OK) return;
+            var itemList = File.ReadLines(file).ToList();
+            foreach (var line in itemList)
+            {
+                var splitter = line.Split('\t');
+                var listStudents = studentRepository.GetAll();
+                var student = listStudents.Last();
+                var studentId = student.Id;
+                StudentDo studentData = new StudentDo
+                {
+                    Id = ++studentId,
+                    Age = splitter[0],
+                    FirstName = splitter[1],
+                    LastName = splitter[2],
+                    Gender = splitter[3],
+                    EmailAddress = splitter[4]
+                };
+                studentRepository.Insert(studentData);
+                var listClassStudents = studentClassRepository.GetAll();
+                var studentClass = listClassStudents.Last();
+                var studentClassId = student.Id;
+
+                var studentClassData = new StudentClassDo()
+                {
+                    Id = ++studentClassId,
+                    StudentId = studentId,
+
+                };
+
+                MessageBox.Show("Done !");
+            }
+        }
+
+        private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+            var name = saveFileDialog1.FileName;
+            if (dataGridView2.RowCount <= 0) return;
+            var dr = new DataGridViewRow();
+            var swOut = new StreamWriter(name);
+            for (var i = 0; i <= dataGridView2.Columns.Count - 1; i++)
+            {
+                if (i > 0)
+                {
+                    swOut.Write(",");
+                }
+                swOut.Write(dataGridView2.Columns[i].HeaderText);
+            }
+            swOut.WriteLine();
+            for (var j = 0; j <= dataGridView2.Rows.Count - 2; j++)
+            {
+                if (j > 0)
+                {
+                    swOut.WriteLine();
+                }
+
+                dr = dataGridView2.Rows[j];
+                for (int i = 0; i < dataGridView2.Columns.Count - 2; i++)
+                {
+                    if (i > 0)
+                    {
+                        swOut.Write(",");
+                    }
+                    if (dr.Cells[i].Value != null)
+                    {
+                        var value = dr.Cells[i].Value.ToString();
+                        value = value.Replace(',', ' ');
+                        value = value.Replace(Environment.NewLine, " ");
+                        swOut.Write(value);
+                    }
+                    
+                   
+                }
+            }
+            swOut.Close();
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.ShowDialog();
+        }
+
+        private void btnInsertStatus_Click(object sender, EventArgs e)
+        {
+            var result = openFileDialog1.ShowDialog();
+            var file = openFileDialog1.FileName;
+            if (result != DialogResult.OK) return;
+            var itemList = File.ReadLines(file).ToList();
+            foreach (var line in itemList)
+            {
+                var splitter = line.Split('\t');
+                var listStatusStudents = studentStatusRepository.GetAll();
+                var studentStatus = listStatusStudents.Last();
+                var studentStatusId = studentStatus.Id;
+                StudentStatusDo studentStatusData = new StudentStatusDo
+                {
+                    Id = ++studentStatusId,
+                    Credits = Int32.Parse(splitter[0]),
+                    StudentId = Int32.Parse(splitter[1]),
+                    ECTS = Int32.Parse(splitter[2]),
+                    Year = Int32.Parse(splitter[3])
+                   
+                };
+                studentStatusRepository.Insert(studentStatusData);
+                MessageBox.Show("Done !");
+
+            }
+
+        }
     }
-    }
+}
+    
 
 

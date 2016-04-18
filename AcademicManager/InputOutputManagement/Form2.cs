@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System;
+using System.IO;
 
 namespace InputOutputManagement
 {
@@ -70,12 +71,11 @@ namespace InputOutputManagement
             //TODO: not complete
             StudentDo studentData = new StudentDo();
             studentData.Id = ++studentId;
-            studentData.Age = textYear.Text;
+            studentData.Age = textAge.Text;
             studentData.FirstName = textFirstName.Text;
             studentData.LastName = textLastName.Text;
             studentData.Gender = textGender.Text;
             studentData.EmailAddress = textEmail.Text;
-
 
             studentRepository.Insert(studentData);
 
@@ -90,10 +90,48 @@ namespace InputOutputManagement
 
             };
 
-           // studentClassRepository.Insert(studentClassData);
+            //studentClassRepository.Insert(studentClassData);
+
+            MessageBox.Show("Done !");
+        }
+
+        private void btnImport_Click(object sender, EventArgs e)
+        {
+            var result = openFileDialog1.ShowDialog();
+            var file = openFileDialog1.FileName;
+            if (result != DialogResult.OK) return;
+            var itemList = File.ReadLines(file).ToList();
+            foreach (var line in itemList)
+            {
+                var splitter = line.Split('\t');
+                var listStudents = studentRepository.GetAll();
+                var student = listStudents.Last();
+                var studentId = student.Id;
+                StudentDo studentData = new StudentDo
+                {
+                    Id = ++studentId,
+                    Age = splitter[0],
+                    FirstName = splitter[1],
+                    LastName = splitter[2],
+                    Gender = splitter[3],
+                    EmailAddress = splitter[4]
+                };
+                studentRepository.Insert(studentData);
+                var listClassStudents = studentClassRepository.GetAll();
+                var studentClass = listClassStudents.Last();
+                var studentClassId = student.Id;
+
+                var studentClassData = new StudentClassDo()
+                {
+                    Id = ++studentClassId,
+                    StudentId = studentId,
+
+                };
+            }
         }
     }
 }
+
 
 
 
