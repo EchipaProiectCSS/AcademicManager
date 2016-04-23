@@ -11,11 +11,11 @@ namespace ProcessManagement.Implementations
 {
     public class StudentStatusRepository : IStudentStatusRepository
     {
-        private readonly IDatabase database;
+        private IDatabase database;
 
-        public StudentStatusRepository(IDatabaseModel model)
+        public StudentStatusRepository(IDatabase database)
         {
-            database = model.GetInstance();
+            this.database = database;
         }
 
         public List<StudentStatusDo> GetAll()

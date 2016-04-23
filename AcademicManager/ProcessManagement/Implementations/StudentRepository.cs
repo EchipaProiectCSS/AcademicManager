@@ -13,9 +13,9 @@ namespace ProcessManagement.Implementations
     {
         private readonly IDatabase database;
 
-        public StudentRepository(IDatabaseModel model)
+        public StudentRepository(IDatabase database)
         {
-            database = model.GetInstance();
+            this.database = database;
         }
 
         public List<StudentDo> GetAll()

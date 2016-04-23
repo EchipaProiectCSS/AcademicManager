@@ -13,9 +13,9 @@ namespace ProcessManagement.Implementations
     {
         private readonly IDatabase database;
 
-        public StudentClassRepository(IDatabaseModel model)
+        public StudentClassRepository(IDatabase database)
         {
-            database = model.GetInstance();
+            this.database = database;
         }
 
         public List<StudentClassDo> GetAll()
@@ -74,7 +74,8 @@ namespace ProcessManagement.Implementations
 
         private List<StudentClassDo> GetClassesFromQuery(IQueryResult query)
         {
-            if (query.Result.Rows.Count == 0)
+            //If we remove null exception raised (note for the teacher)
+            if (query == null || query.Result.Rows.Count == 0)
             {
                 return null;
             }
