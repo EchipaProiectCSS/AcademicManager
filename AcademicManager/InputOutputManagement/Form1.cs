@@ -1,8 +1,5 @@
 ﻿using System.Windows.Forms;
-using System.Data.SqlClient;
 using ProcessManagement.DOs;
-using ProcessManagement.Helper;
-using ProcessManagement.Implementations;
 using ProcessManagement.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,35 +15,25 @@ namespace InputOutputManagement
         private readonly IStudentRepository studentRepository;
         private readonly IStudentClassRepository studentClassRepository;
         private readonly IStudentStatusRepository studentStatusRepository;
-        private IDatabaseModel databaseModel;
 
-        public Form1()
+        public Form1(IDatabaseContext databaseContext)
         {
-            databaseModel = new DatabaseModel();
-            this.studentRepository = new StudentRepository(databaseModel);
-            this.studentClassRepository = new StudentClassRepository(databaseModel);
-            this.studentStatusRepository = new StudentStatusRepository(databaseModel);
-
             InitializeComponent();
+
+            studentRepository = databaseContext.Student;
+            studentClassRepository = databaseContext.StudentClass;
+            studentStatusRepository = databaseContext.StudentStatus;
+
+            PopulateSpecificInterfaceComponent();
+        }
+
+        private void PopulateSpecificInterfaceComponent()
+        {
             combStatus.Items.Add("Budget");
             combStatus.Items.Add("Fee");
 
             combPromoted.Items.Add("Yes");
             combPromoted.Items.Add("No");
-
-
-        }
-
-        public Form1(IStudentRepository studentRepository, IStudentClassRepository studentClassRepository, IStudentStatusRepository studentStatusRepository)
-        {
-            databaseModel = new DatabaseModel();
-            this.studentRepository = new StudentRepository(databaseModel);
-            this.studentClassRepository = studentClassRepository;
-            this.studentStatusRepository = studentStatusRepository;
-
-            InitializeComponent();
-      
-
         }
 
         private void Form1_Load(object sender, System.EventArgs e)
@@ -97,37 +84,21 @@ namespace InputOutputManagement
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            List<StudentDo> students = studentRepository.GetAll();
-            List<int> studentsToAdd = new List<int>();
+            List<int> studentsToAdd = GetStudentsId();
+
             List<int> studentsClassToAdd = new List<int>();
             List<int> studentsStatusToAdd = new List<int>();
             List<StudentView> resultStudents = new List<StudentView>();
 
-            foreach (var student in students){
-                var toAdd = true;
-                if (txtFirstname.Text != "" && !txtFirstname.Text.Equals(student.FirstName))
-                    {
-                        toAdd = false;
-                    }
-                    if (txtLastname.Text != "" && !txtLastname.Text.Equals(student.LastName))
-                    {
-                        toAdd = false;
-                    }
-                    if (toAdd)
-                    {
-                        studentsToAdd.Add(student.Id);
-                    }
-
-                }
             if (combPromoted.Text != "" || txtClass.Text != "")
             {
                 List<StudentClassDo> studentsClass = studentClassRepository.GetAll();
-                foreach(var studClass in studentsClass)
+                foreach (var studClass in studentsClass)
                 {
                     var toAdd = true;
                     if (combPromoted.Text != "" && !combPromoted.Text.Equals(studClass.Promoted))
                     {
-                        toAdd = false;            
+                        toAdd = false;
                     }
                     if (txtClass.Text != "" && !txtClass.Text.Equals(studClass.Name))
                     {
@@ -141,7 +112,7 @@ namespace InputOutputManagement
                 }
             }
 
-            if(combStatus.Text != "")
+            if (combStatus.Text != "")
             {
                 List<StudentStatusDo> studentsStatus = studentStatusRepository.GetAll();
                 foreach (var studStatus in studentsStatus)
@@ -153,7 +124,8 @@ namespace InputOutputManagement
                             studentsStatusToAdd.Add(studStatus.StudentId);
                         }
 
-                    }else
+                    }
+                    else
                     {
                         if (studStatus.Credits < 100)
                         {
@@ -167,10 +139,10 @@ namespace InputOutputManagement
             IEnumerable<int> firstresult = null;
             IEnumerable<int> lastresult = null;
             if (studentsClassToAdd.Count > 0)
-           {
+            {
                 if (studentsToAdd.Count > 0)
                 {
-                   firstresult = studentsToAdd.Intersect(studentsClassToAdd);
+                    firstresult = studentsToAdd.Intersect(studentsClassToAdd);
                 }
                 else
                 {
@@ -180,9 +152,9 @@ namespace InputOutputManagement
             else
             {
                 if (studentsToAdd.Count > 0)
-                 {
+                {
                     firstresult = studentsToAdd;
-                 }
+                }
 
             }
 
@@ -207,8 +179,8 @@ namespace InputOutputManagement
                 }
             }
 
-           if (lastresult != null && lastresult.ToList().Count > 0)
-           {
+            if (lastresult != null && lastresult.ToList().Count > 0)
+            {
                 List<int> result = lastresult.ToList();
                 foreach (var studId in result)
                 {
@@ -217,7 +189,7 @@ namespace InputOutputManagement
                     StudentDo student = studentRepository.Get(studId);
 
                     StudentView studView = new StudentView();
-                   
+
                     if (studentsClass != null)
                     {
                         if (studentsClass.First().Promoted != null)
@@ -226,7 +198,7 @@ namespace InputOutputManagement
                         }
                         studView.Class = studentsClass.First().Name;
                     }
-                   
+
                     if (studentsStatuses != null)
                     {
                         studView.Student_Year = studentsStatuses.First().Year.ToString();
@@ -241,18 +213,44 @@ namespace InputOutputManagement
                         studView.Age = student.Age;
                         studView.Gender = student.Gender;
                     }
-                   
-                   
+
+
                     resultStudents.Add(studView);
                 }
-           }
+            }
 
-               
+
             var bindingList = new BindingList<StudentView>(resultStudents);
             var source = new BindingSource(bindingList, null);
             dataGridView2.DataSource = source;
 
 
+        }
+
+        public List<int> GetStudentsId()
+        {
+            List<StudentDo> students = studentRepository.GetAll();
+
+            List<int> studentsToAdd = new List<int>();
+
+            foreach (var student in students)
+            {
+                var toAdd = true;
+                if (txtFirstname.Text != "" && !txtFirstname.Text.Equals(student.FirstName))
+                {
+                    toAdd = false;
+                }
+                if (txtLastname.Text != "" && !txtLastname.Text.Equals(student.LastName))
+                {
+                    toAdd = false;
+                }
+                if (toAdd)
+                {
+                    studentsToAdd.Add(student.Id);
+                }
+
+            }
+            return studentsToAdd;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -335,8 +333,8 @@ namespace InputOutputManagement
                         value = value.Replace(Environment.NewLine, " ");
                         swOut.Write(value);
                     }
-                    
-                   
+
+
                 }
             }
             swOut.Close();
@@ -366,7 +364,7 @@ namespace InputOutputManagement
                     StudentId = Int32.Parse(splitter[1]),
                     ECTS = Int32.Parse(splitter[2]),
                     Year = Int32.Parse(splitter[3])
-                   
+
                 };
                 studentStatusRepository.Insert(studentStatusData);
                 MessageBox.Show("Done !");
@@ -376,6 +374,6 @@ namespace InputOutputManagement
         }
     }
 }
-    
+
 
 

@@ -17,16 +17,11 @@ namespace InputOutputManagement
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-  
-            Application.Run(new Form1());
-
             IKernel kernel = new StandardKernel(new NinjectCommon());
 
-            var student = kernel.GetService(typeof(IStudentRepository));
-            var studentClass = kernel.GetService(typeof(IStudentClassRepository));
-            var studentStatus = kernel.GetService(typeof(IStudentStatusRepository));
+            var context = kernel.GetService(typeof(IDatabaseContext));
 
-            Application.Run(new Form1((IStudentRepository)student, (IStudentClassRepository)studentClass, (IStudentStatusRepository)studentStatus));
+            Application.Run(new Form1((IDatabaseContext)context));
         }
     }
 }

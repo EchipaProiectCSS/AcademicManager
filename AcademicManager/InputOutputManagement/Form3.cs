@@ -1,11 +1,8 @@
 ﻿using System.Windows.Forms;
-using System.Data.SqlClient;
 using ProcessManagement.DOs;
-using ProcessManagement.Helper;
 using ProcessManagement.Implementations;
 using ProcessManagement.Interfaces;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System;
 using System.IO;
@@ -14,15 +11,13 @@ namespace InputOutputManagement
 {
     public partial class InsertStudentClass : Form
     {
-
         private readonly IStudentClassRepository studentClassRepository;
-        private IDatabaseModel databaseModel;
 
         public InsertStudentClass()
         {
-            databaseModel = new DatabaseModel();
-            
-            this.studentClassRepository = new StudentClassRepository(databaseModel);
+            DatabaseContext context = new DatabaseContext();
+            this.studentClassRepository = context.StudentClass;
+
             InitializeComponent();
         }
 
@@ -61,7 +56,7 @@ namespace InputOutputManagement
                     Name = splitter[0],
                     StudentId = Int32.Parse(splitter[1]),
                     Promoted = splitter[2]
-                    
+
                 };
                 studentClassRepository.Insert(studentData);
             }

@@ -1,11 +1,8 @@
 ﻿using System.Windows.Forms;
-using System.Data.SqlClient;
 using ProcessManagement.DOs;
-using ProcessManagement.Helper;
 using ProcessManagement.Implementations;
 using ProcessManagement.Interfaces;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System;
 using System.IO;
@@ -18,14 +15,14 @@ namespace InputOutputManagement
         private readonly IStudentRepository studentRepository;
         private readonly IStudentClassRepository studentClassRepository;
         private readonly IStudentStatusRepository studentStatusRepository;
-        private IDatabaseModel databaseModel;
 
         public InsertStudent()
         {
-            databaseModel = new DatabaseModel();
-            this.studentRepository = new StudentRepository(databaseModel);
-            this.studentClassRepository = new StudentClassRepository(databaseModel);
-            this.studentStatusRepository = new StudentStatusRepository(databaseModel);
+            DatabaseContext context = new DatabaseContext();
+
+            this.studentRepository = context.Student;
+            this.studentClassRepository = context.StudentClass;
+            this.studentStatusRepository = context.StudentStatus;
             InitializeComponent();
         }
 
