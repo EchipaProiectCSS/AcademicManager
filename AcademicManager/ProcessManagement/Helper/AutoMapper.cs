@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Database.Implementations.Internal.Domain;
 
 namespace ProcessManagement.Helper
 {
@@ -12,6 +11,11 @@ namespace ProcessManagement.Helper
 
         public AutoMapper(object dataDo, Dictionary<string,string> row)
         {
+            if (dataDo == null || row == null)
+            {
+                throw new Exception("The mapping can't be made with null values.");
+            }
+
             this.dataDo = dataDo;
             this.row = row;
         }
