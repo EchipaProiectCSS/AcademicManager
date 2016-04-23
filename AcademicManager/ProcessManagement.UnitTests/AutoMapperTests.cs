@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using ProcessManagement.Helper;
+
+//Unit testing
 
 namespace ProcessManagement.UnitTests
 {
@@ -19,6 +22,18 @@ namespace ProcessManagement.UnitTests
                 {"Id","1"},
                 {"Age","12"}
             };
+        }
+        
+        [Test]
+        public void IfNullObjectThenRaiseExceptionTest()
+        {
+            var exception = Assert.Throws<Exception>(() => new AutoMapper(null, rowMock).Start());
+            
+            Assert.That(exception.Message, Is.EqualTo("The mapping can't be made with null values."));
+
+            exception = Assert.Throws<Exception>(() => new AutoMapper(studentMock, null).Start());
+
+            Assert.That(exception.Message, Is.EqualTo("The mapping can't be made with null values."));
         }
 
         [Test]

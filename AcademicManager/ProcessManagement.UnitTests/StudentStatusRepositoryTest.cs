@@ -1,22 +1,20 @@
 ﻿using System;
 using NUnit.Framework;
-using ProcessManagement.DOs;
 using ProcessManagement.Implementations;
-using ProcessManagement.Interfaces;
+
+//Integration testing
 
 namespace ProcessManagement.UnitTests
 {
     [TestFixture]
     public class StudentStatusRepositoryTest
     {
-        private IDatabaseModel databaseModel;
         private StudentStatusRepository studentStatus;
 
         [SetUp]
         public void Init()
         {
-            databaseModel = new DatabaseModel();
-            studentStatus = new StudentStatusRepository(databaseModel);
+            studentStatus = (StudentStatusRepository)new DatabaseContext().StudentStatus;
         }
 
         [Test]
@@ -43,49 +41,18 @@ namespace ProcessManagement.UnitTests
             Assert.IsNotNull(result);
         }
 
-        [Test]
-        public void UpdateStudentDataTest()
-        {
-            //TODO: not complete
-            StudentStatusDo studentData = new StudentStatusDo()
-            {
-                Id = 0,
-                Credits = 40,
-                StudentId = 1,
-                ECTS = 8
-            };
-
-            studentStatus.Update(studentData);
-        }
-
         public void UpdateStudentNullDataTest()
         {
             var ex = Assert.Throws<Exception>(() => studentStatus.Update(null));
 
-            Assert.That(ex.Message, Is.EqualTo("An update with null value can't be made!")); ;
-        }
-
-        [Test]
-        public void InsertStudentDataTest()
-        {
-            //TODO: not complete
-            StudentStatusDo studentData = new StudentStatusDo()
-            {
-                Id = 2,
-                Credits = 33,
-                StudentId = 1,
-                ECTS = 8,
-                Year = 2016
-            };
-
-            studentStatus.Insert(studentData);
+            Assert.That(ex.Message, Is.EqualTo("An update with null value can't be made!"));
         }
 
         public void InsertStudentNullDataTest()
         {
             var ex = Assert.Throws<Exception>(() => studentStatus.Insert(null));
 
-            Assert.That(ex.Message, Is.EqualTo("An insert with null value can't be made!")); ;
+            Assert.That(ex.Message, Is.EqualTo("An insert with null value can't be made!"));
         }
 
     }
