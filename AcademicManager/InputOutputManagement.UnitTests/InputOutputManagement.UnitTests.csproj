@@ -30,11 +30,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,6 +52,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Database\Database.csproj">
+      <Project>{153626a7-455d-4e10-a00d-820276ee5d79}</Project>
+      <Name>Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InputOutputManagement\InputOutputManagement.csproj">
+      <Project>{cb7ff093-2fab-4673-a9dc-e5b4e087b0e1}</Project>
+      <Name>InputOutputManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProcessManagement\ProcessManagement.csproj">
+      <Project>{3bf4644a-0d6e-4a25-a15e-c8bb342f142a}</Project>
+      <Name>ProcessManagement</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
