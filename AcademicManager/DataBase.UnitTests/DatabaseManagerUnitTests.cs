@@ -2,13 +2,23 @@
 {
     using System;
     using System.IO;
+
     using Database.Implementations;
     using Database.Interfaces;
+
     using NUnit.Framework;
 
     [TestFixture]
     public class DatabaseManagerUnitTests
     {
+        private const string DatabaseFilePath = @"C:\Databases";
+
+        private const string DatabaseName = "SampleDatabase";
+
+        private readonly string databaseConnectionString = Path.Combine(DatabaseFilePath, DatabaseName);
+
+        private IDatabaseManager<FileSystemDatabase> databaseManager;
+
         [SetUp]
         public void Initialize()
         {
@@ -28,11 +38,6 @@
                 Directory.Delete(DatabaseFilePath, true);
             }
         }
-
-        private const string DatabaseFilePath = @"C:\Databases";
-        private const string DatabaseName = "SampleDatabase";
-        private readonly string databaseConnectionString = Path.Combine(DatabaseFilePath, DatabaseName);
-        private IDatabaseManager<FileSystemDatabase> databaseManager;
 
         [Test]
         public void ShouldNotThrowWhenCallingCreateWithEmptyParams()
@@ -78,7 +83,7 @@
         [ExpectedException(typeof(FileNotFoundException))]
         public void ShouldThrowWhenCallingOpenWithEmpty()
         {
-            //BUG: does not throw expected error
+            // BUG: does not throw expected error
             databaseManager.Open(string.Empty);
         }
 
@@ -101,8 +106,8 @@
         [ExpectedException(typeof(FileNotFoundException))]
         public void ShouldThrowWhenOpeningANonExistingDatabase()
         {
-            //BUG: this does not fail with the expected error because the implementation does not properly verify
-            //BUG: that the actual database folder exists, it checks that its parent folder exists instead
+            // BUG: this does not fail with the expected error because the implementation does not properly verify
+            // BUG: that the actual database folder exists, it checks that its parent folder exists instead
             databaseManager.Create(DatabaseFilePath, DatabaseName);
             var nonExistingDatabase = Path.Combine(DatabaseFilePath, DatabaseName) + "NotExists";
             databaseManager.Open(nonExistingDatabase);

@@ -1,12 +1,23 @@
 ﻿namespace Database.Implementations
 {
     using System.IO;
-    using Interfaces;
-    using Internal;
-    using Internal.Parsers;
+
+    using Database.Implementations.Internal;
+    using Database.Implementations.Internal.Parsers;
+    using Database.Interfaces;
 
     public class FileSystemDatabaseManager : IDatabaseManager<FileSystemDatabase>
     {
+        private static string ExtractDatabaseName(string connectionString)
+        {
+            return connectionString.TrimEnd('\\').Substring(connectionString.LastIndexOf('\\') + 1);
+        }
+
+        private static string ExtractConnectionString(string connectionString)
+        {
+            return connectionString.TrimEnd('\\').Substring(0, connectionString.LastIndexOf('\\'));
+        }
+
         public FileSystemDatabase Open(string filePath)
         {
             var directoryName = Path.GetDirectoryName(filePath);
@@ -16,22 +27,28 @@
                 throw new FileNotFoundException("The database does not exist at the provided location.");
             }
 
-            var db = new FileSystemDatabase(new FileLoader(), new InstructionParser(), new QueryParser(), new DatabaseEngine())
-            {
-                ConnectionString = ExtractConnectionString(filePath),
-                Name = ExtractDatabaseName(filePath)
-            };
+            var db = new FileSystemDatabase(
+                new FileLoader(), 
+                new InstructionParser(), 
+                new QueryParser(), 
+                new DatabaseEngine())
+                         {
+                             ConnectionString = ExtractConnectionString(filePath), 
+                             Name = ExtractDatabaseName(filePath)
+                         };
 
             return db;
         }
 
         public FileSystemDatabase Create(string connectionString, string name)
         {
-            var db = new FileSystemDatabase(new FileLoader(), new InstructionParser(), new QueryParser(), new DatabaseEngine())
-            {
-                ConnectionString = connectionString,
-                Name = name
-            };
+            var db = new FileSystemDatabase(
+                new FileLoader(), 
+                new InstructionParser(), 
+                new QueryParser(), 
+                new DatabaseEngine()) {
+                                         ConnectionString = connectionString, Name = name 
+                                      };
 
             var dbFilePath = Path.Combine(db.ConnectionString, db.Name);
 
@@ -41,20 +58,11 @@
             }
             else
             {
-                throw new IOException(string.Format("The {0} database already exists at {1}.", db.Name, db.ConnectionString));
+                throw new IOException(
+                    string.Format("The {0} database already exists at {1}.", db.Name, db.ConnectionString));
             }
 
             return db;
-        }
-
-        private static string ExtractDatabaseName(string connectionString)
-        {
-            return connectionString.TrimEnd('\\').Substring(connectionString.LastIndexOf('\\') + 1);
-        }
-
-        private static string ExtractConnectionString(string connectionString)
-        {
-            return connectionString.TrimEnd('\\').Substring(0, connectionString.LastIndexOf('\\'));
         }
     }
 }

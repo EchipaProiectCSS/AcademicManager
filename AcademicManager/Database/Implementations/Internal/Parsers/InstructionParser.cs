@@ -3,17 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Interfaces.Internal;
-    using Utility;
+
+    using global::Database.Implementations.Internal.Utility;
+    using global::Database.Interfaces.Internal;
 
     public class InstructionParser : IInstructionParser
     {
-        public ICollection<IScriptInstruction> Parse(string scriptBody)
-        {
-            var oneLineStringIntructions = CleanScript(scriptBody);
-            return ConvertToInstructions(oneLineStringIntructions);
-        }
-
         private static ICollection<IScriptInstruction> ConvertToInstructions(
             IEnumerable<string> oneLineStringIntructions)
         {
@@ -52,13 +47,14 @@
             {
                 if (!lines[i].EndsWith(";", StringComparison.Ordinal))
                 {
-                    changes[i] = new List<string> {lines[i]};
+                    changes[i] = new List<string>();
 
                     do
                     {
-                        i++;
                         changes[i].Add(lines[i]);
-                    } while (!lines[i].EndsWith(";", StringComparison.Ordinal));
+                        i++;
+                    }
+                    while (lines.Count < i && !lines[i].EndsWith(";", StringComparison.Ordinal));
                 }
             }
 
@@ -74,6 +70,7 @@
                     result.Add(lines[i]);
                 }
             }
+
             return result;
         }
 
@@ -90,6 +87,7 @@
                     {
                         splits[j] = splits[j] + ';';
                     }
+
                     changes[i] = splits;
                 }
             }
@@ -107,16 +105,25 @@
                     result.Add(lines[i]);
                 }
             }
+
             return result;
         }
 
         private static List<string> RemoveEmptyLinesAndCommentLines(string scriptBody)
         {
-            var lines = scriptBody.Split('\n').ToList();
+            List<string> lines = scriptBody.Trim().Split('\n').ToList();
 
-            lines.RemoveAll(l => l.StartsWith("--", StringComparison.Ordinal) || string.IsNullOrWhiteSpace(l));
+            List<string> trimmedLines = lines.Select(line => line.Trim()).ToList();
 
-            return lines;
+            trimmedLines.RemoveAll(l => l.StartsWith("--", StringComparison.Ordinal) || string.IsNullOrWhiteSpace(l));
+
+            return trimmedLines;
+        }
+
+        public ICollection<IScriptInstruction> Parse(string scriptBody)
+        {
+            var oneLineStringIntructions = CleanScript(scriptBody);
+            return ConvertToInstructions(oneLineStringIntructions);
         }
     }
 }

@@ -45,8 +45,9 @@
   <ItemGroup>
     <Compile Include="DatabaseManagerUnitTests.cs" />
     <Compile Include="DatabaseScriptsUnitTests.cs" />
+    <Compile Include="QueryParserUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScriptParserUnitTests.cs" />
+    <Compile Include="InstructionParserUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Database\Database.csproj">

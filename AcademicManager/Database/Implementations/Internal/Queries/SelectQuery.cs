@@ -5,13 +5,15 @@
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using Domain;
-    using Interfaces.Internal;
-    using Utility;
+
+    using global::Database.Implementations.Internal.Domain;
+    using global::Database.Implementations.Internal.Utility;
+    using global::Database.Interfaces.Internal;
 
     public class SelectQuery : BaseQuery
     {
-        public SelectQuery(string query) : base(query)
+        public SelectQuery(string query)
+            : base(query)
         {
             if (!query.Contains(Instructions.From))
             {
@@ -33,7 +35,9 @@
             if (!TableExists(tableName))
             {
                 throw new TableAlreadyExistsException(
-                    string.Format("The database {0} does not contain a table with the name {1}", Database.Name,
+                    string.Format(
+                        "The database {0} does not contain a table with the name {1}", 
+                        Database.Name, 
                         tableName));
             }
 
@@ -57,12 +61,12 @@
 
                 if (!table.Header.Any(c => c.Name.Equals(columnName, StringComparison.OrdinalIgnoreCase)))
                 {
-                    throw new InvalidOperationException(string.Format("Table {0} does not have the {1} column.",
-                        tableName, columnName));
+                    throw new InvalidOperationException(
+                        string.Format("Table {0} does not have the {1} column.", tableName, columnName));
                 }
             }
 
-            var resultTable = new Table {Header = table.Header};
+            var resultTable = new Table { Header = table.Header };
 
             foreach (var row in table.Rows)
             {
@@ -105,9 +109,9 @@
             result.Header =
                 columns.Select(
                     c =>
-                        new Column
+                    new Column
                         {
-                            IsPrimaryKey = c.ToLower().Contains(Instructions.PrimaryKey),
+                            IsPrimaryKey = c.ToLower().Contains(Instructions.PrimaryKey), 
                             Name = c.Replace(Instructions.PrimaryKey, string.Empty).Trim()
                         }).ToList();
 
@@ -142,8 +146,8 @@
                 return null;
             }
 
-            var startIndex = queryCopy.IndexOf(Instructions.Where, StringComparison.OrdinalIgnoreCase) +
-                             Instructions.Where.Length;
+            var startIndex = queryCopy.IndexOf(Instructions.Where, StringComparison.OrdinalIgnoreCase)
+                             + Instructions.Where.Length;
 
             var length = queryCopy.IndexOf(Instructions.StatementTerminator) - startIndex;
 
@@ -171,7 +175,7 @@
 
             var result = new Table();
             var cond = equalityConditions.First()
-                .Split(new[] {Operators.Equal}, StringSplitOptions.RemoveEmptyEntries);
+                .Split(new[] { Operators.Equal }, StringSplitOptions.RemoveEmptyEntries);
 
             var row = new Row();
             row.Values.Add(cond[0].Trim(), cond[1].Trim().Replace("'", string.Empty));
@@ -180,8 +184,7 @@
 
             for (var i = 1; i < equalityConditions.Count - 1; i++)
             {
-                cond = equalityConditions[i]
-                    .Split(new[] {Operators.Equal}, StringSplitOptions.RemoveEmptyEntries);
+                cond = equalityConditions[i].Split(new[] { Operators.Equal }, StringSplitOptions.RemoveEmptyEntries);
 
                 if (quantifiers[i].Equals(Operators.Or))
                 {
@@ -192,10 +195,10 @@
 
                 result.Rows.Add(row);
             }
+
             if (equalityConditions.Count >= 2)
             {
-                cond = equalityConditions.Last()
-                    .Split(new[] {Operators.Equal}, StringSplitOptions.RemoveEmptyEntries);
+                cond = equalityConditions.Last().Split(new[] { Operators.Equal }, StringSplitOptions.RemoveEmptyEntries);
 
                 if (quantifiers.Last().Equals(Operators.Or))
                 {
@@ -221,8 +224,8 @@
         {
             var queryCopy = string.Copy(Query);
 
-            var startIndex = queryCopy.IndexOf(Instructions.Select, StringComparison.OrdinalIgnoreCase) +
-                             Instructions.Select.Length;
+            var startIndex = queryCopy.IndexOf(Instructions.Select, StringComparison.OrdinalIgnoreCase)
+                             + Instructions.Select.Length;
 
             var length = queryCopy.IndexOf(Instructions.From, StringComparison.OrdinalIgnoreCase) - startIndex;
 
@@ -237,8 +240,8 @@
         {
             var queryCopy = string.Copy(Query);
 
-            var startIndex = queryCopy.IndexOf(Instructions.From, StringComparison.OrdinalIgnoreCase) +
-                             Instructions.From.Length;
+            var startIndex = queryCopy.IndexOf(Instructions.From, StringComparison.OrdinalIgnoreCase)
+                             + Instructions.From.Length;
 
             int length;
 
@@ -248,7 +251,7 @@
             }
             else
             {
-                length = queryCopy.IndexOf(Instructions.StatementTerminator) -startIndex;
+                length = queryCopy.IndexOf(Instructions.StatementTerminator) - startIndex;
             }
 
             var tableName = queryCopy.Substring(startIndex, length).Trim(' ');
