@@ -1,23 +1,12 @@
 ﻿namespace Database.Implementations
 {
     using System.IO;
-
-    using Database.Implementations.Internal;
-    using Database.Implementations.Internal.Parsers;
-    using Database.Interfaces;
+    using Interfaces;
+    using Internal;
+    using Internal.Parsers;
 
     public class FileSystemDatabaseManager : IDatabaseManager<FileSystemDatabase>
     {
-        private static string ExtractDatabaseName(string connectionString)
-        {
-            return connectionString.TrimEnd('\\').Substring(connectionString.LastIndexOf('\\') + 1);
-        }
-
-        private static string ExtractConnectionString(string connectionString)
-        {
-            return connectionString.TrimEnd('\\').Substring(0, connectionString.LastIndexOf('\\'));
-        }
-
         public FileSystemDatabase Open(string filePath)
         {
             var directoryName = Path.GetDirectoryName(filePath);
@@ -28,14 +17,14 @@
             }
 
             var db = new FileSystemDatabase(
-                new FileLoader(), 
-                new InstructionParser(), 
-                new QueryParser(), 
+                new FileLoader(),
+                new InstructionParser(),
+                new QueryParser(),
                 new DatabaseEngine())
-                         {
-                             ConnectionString = ExtractConnectionString(filePath), 
-                             Name = ExtractDatabaseName(filePath)
-                         };
+            {
+                ConnectionString = ExtractConnectionString(filePath),
+                Name = ExtractDatabaseName(filePath)
+            };
 
             return db;
         }
@@ -43,12 +32,14 @@
         public FileSystemDatabase Create(string connectionString, string name)
         {
             var db = new FileSystemDatabase(
-                new FileLoader(), 
-                new InstructionParser(), 
-                new QueryParser(), 
-                new DatabaseEngine()) {
-                                         ConnectionString = connectionString, Name = name 
-                                      };
+                new FileLoader(),
+                new InstructionParser(),
+                new QueryParser(),
+                new DatabaseEngine())
+            {
+                ConnectionString = connectionString,
+                Name = name
+            };
 
             var dbFilePath = Path.Combine(db.ConnectionString, db.Name);
 
@@ -63,6 +54,16 @@
             }
 
             return db;
+        }
+
+        private static string ExtractDatabaseName(string connectionString)
+        {
+            return connectionString.TrimEnd('\\').Substring(connectionString.LastIndexOf('\\') + 1);
+        }
+
+        private static string ExtractConnectionString(string connectionString)
+        {
+            return connectionString.TrimEnd('\\').Substring(0, connectionString.LastIndexOf('\\'));
         }
     }
 }

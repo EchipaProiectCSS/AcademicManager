@@ -58,7 +58,7 @@
         {
             var instructions = instructionParser.Parse(scriptBody);
 
-            if (instructions == null || instructions.Count <= 0)
+            if ((instructions == null) || (instructions.Count <= 0))
             {
                 return;
             }
