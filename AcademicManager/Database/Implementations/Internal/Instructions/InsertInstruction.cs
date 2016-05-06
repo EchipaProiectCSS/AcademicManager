@@ -32,7 +32,7 @@
 
             if (!TableExists(tableName))
             {
-                throw new TableAlreadyExistsException(
+                throw new InvalidOperationException(
                     string.Format("The database {0} does not contain a table with the name {1}", Database.Name,
                         tableName));
             }
@@ -93,7 +93,7 @@
 
             for (int i = 0; i < values.Count; i++)
             {
-                values[i] = values[i].Replace("'", string.Empty);
+                values[i] = values[i].Trim().Replace("'", string.Empty);
             }
 
             File.AppendAllLines(tableFilePath, new List<string> {string.Join(", ", values)});

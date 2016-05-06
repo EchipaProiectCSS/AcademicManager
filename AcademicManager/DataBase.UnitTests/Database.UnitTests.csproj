@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InsertIntoTableUnitTests.cs" />
+    <Compile Include="CreateTableUnitTests.cs" />
     <Compile Include="FileSystemDatabaseUnitTests.cs" />
     <Compile Include="DatabaseEngineUnitTests.cs" />
     <Compile Include="DatabaseManagerUnitTests.cs" />

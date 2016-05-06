@@ -8,7 +8,7 @@
     [TestFixture]
     public class DatabaseScriptsUnitTests
     {
-        [SetUp]
+        [TestFixtureSetUp]
         public void Initialize()
         {
             if (Directory.Exists(DatabaseFilePath))
@@ -20,7 +20,7 @@
             database = databaseManager.Create(DatabaseFilePath, DatabaseName);
         }
 
-        [TearDown]
+        [TestFixtureTearDown]
         public void TearDown()
         {
             Directory.Delete(DatabaseFilePath, true);
@@ -35,17 +35,7 @@
         public void ShouldCreateTable()
         {
             var script = @"create table admins (id, username, password);";
-            database.Execute(script);
-
-            var expectedTableFileLocation = Path.Combine(database.ConnectionString, database.Name, "admins.txt");
-
-            Assert.IsTrue(File.Exists(expectedTableFileLocation));
-
-            var expectedTableFileContents = "id, username, password\r\n";
-            var actualTableFileContents = File.ReadAllText(expectedTableFileLocation);
-
-            Assert.AreEqual(expectedTableFileContents, actualTableFileContents);
-
+            
             script = @"insert into admins (id, username, password) values ('0', 'John Doe', '1234');";
             database.Execute(script);
 
