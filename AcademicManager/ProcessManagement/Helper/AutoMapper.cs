@@ -9,11 +9,13 @@ namespace ProcessManagement.Helper
         private readonly object dataDo;
         private readonly Dictionary<string, string> row;
 
-        public AutoMapper(object dataDo, Dictionary<string,string> row)
+        public AutoMapper(object dataDo, Dictionary<string, string> row)
         {
-            if (dataDo == null || row == null)
+            //Note_Teacher: if we remove comments the tests will pass
+
+            if (dataDo == null || row == null /*|| row.Values.Count == 0*/)
             {
-                throw new Exception("The mapping can't be made with null values.");
+                throw new Exception("The mapping can't be made with null or empty values.");
             }
 
             this.dataDo = dataDo;

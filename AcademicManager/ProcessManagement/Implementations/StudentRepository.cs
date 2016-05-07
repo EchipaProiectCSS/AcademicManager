@@ -22,16 +22,15 @@ namespace ProcessManagement.Implementations
         {
             var query = database.Query(Queries.GetAllStudents);
 
-            var students = GetStudentsFromQueryResult(query);
-
-            return students;
+            return query == null ? null
+                                 : GetStudentsFromQueryResult(query);
         }
 
         public StudentDo Get(int studentId)
         {
             var query = database.Query(string.Format(Queries.GetStudentById, studentId));
 
-            if (query.Result.Rows.Count == 0)
+            if (query == null)
             {
                 return null;
             }

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using ProcessManagement.Helper;
 
-//Unit testing
-
 namespace ProcessManagement.UnitTests
 {
     [TestFixture]
@@ -29,11 +27,11 @@ namespace ProcessManagement.UnitTests
         {
             var exception = Assert.Throws<Exception>(() => new AutoMapper(null, rowMock).Start());
             
-            Assert.That(exception.Message, Is.EqualTo("The mapping can't be made with null values."));
+            Assert.That(exception.Message, Is.EqualTo("The mapping can't be made with null or empty values."));
 
             exception = Assert.Throws<Exception>(() => new AutoMapper(studentMock, null).Start());
 
-            Assert.That(exception.Message, Is.EqualTo("The mapping can't be made with null values."));
+            Assert.That(exception.Message, Is.EqualTo("The mapping can't be made with null or empty values."));
         }
 
         [Test]

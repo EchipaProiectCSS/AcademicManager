@@ -22,14 +22,15 @@ namespace ProcessManagement.Implementations
         {
             var query = database.Query(Queries.GetAllClasses);
 
-            return GetClassesFromQuery(query);
+            return query == null ? null
+                                 : GetClassesFromQuery(query);
         }
 
         public StudentClassDo Get(int classId)
         {
             var query = database.Query(string.Format(Queries.GetClassById, classId));
 
-            if (query.Result.Rows.Count == 0)
+            if (query == null)
             {
                 return null;
             }
@@ -74,19 +75,17 @@ namespace ProcessManagement.Implementations
 
         private List<StudentClassDo> GetClassesFromQuery(IQueryResult query)
         {
-            //If we remove null exception raised (note for the teacher)
-            if (query == null || query.Result.Rows.Count == 0)
-            {
-                return null;
-            }
-
-            var classes = GetData(query);
-
-            return classes;
+            return query == null ? null
+                                 : GetData(query);
         }
 
         private List<StudentClassDo> GetData(IQueryResult query)
         {
+            if (query.Result.Rows.Count == 0)
+            {
+                return null;
+            }
+
             List<StudentClassDo> statuses = new List<StudentClassDo>();
 
             foreach (var row in query.Result.Rows)

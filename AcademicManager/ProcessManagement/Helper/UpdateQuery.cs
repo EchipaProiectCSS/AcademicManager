@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace ProcessManagement.Helper
 {
@@ -6,6 +7,11 @@ namespace ProcessManagement.Helper
     {
         public static string Create(string tableName, object objectData)
         {
+            if (tableName == null || objectData == null)
+            {
+                throw new Exception("Please make sure that table name or values used for creating the query aren't null!");
+            }
+
             var query = $"update {tableName} set ";
 
             var last = objectData.GetType().GetProperties().Last();

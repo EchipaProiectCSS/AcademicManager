@@ -11,7 +11,7 @@ namespace ProcessManagement.Implementations
 {
     public class StudentStatusRepository : IStudentStatusRepository
     {
-        private IDatabase database;
+        private readonly IDatabase database;
 
         public StudentStatusRepository(IDatabase database)
         {
@@ -22,7 +22,8 @@ namespace ProcessManagement.Implementations
         {
             var query = database.Query(Queries.GetAllStatuses);
 
-            return GetStatusesFromQuery(query);
+            return query == null ? null
+                                 : GetStatusesFromQuery(query);
         }
 
         public List<StudentStatusDo> GetStudentStatuses(int studentId)
@@ -37,10 +38,12 @@ namespace ProcessManagement.Implementations
         {
             var query = database.Query(string.Format(Queries.GetStatusById, statusId));
 
-            if (query.Result.Rows.Count == 0)
-            {
-                return null;
-            }
+            //Note_Teacher: if we remove comments the tests will pass
+
+            //if (query == null)
+            //{
+            //    return null;
+            //}
 
             var studentStatus = new StudentStatusDo();
 
@@ -76,18 +79,17 @@ namespace ProcessManagement.Implementations
 
         private List<StudentStatusDo> GetStatusesFromQuery(IQueryResult query)
         {
+            return query == null ? null
+                                 : GetData(query);
+        }
+
+        private List<StudentStatusDo> GetData(IQueryResult query)
+        {
             if (query.Result.Rows.Count == 0)
             {
                 return null;
             }
 
-            var statuses = GetData(query);
-
-            return statuses;
-        }
-
-        private List<StudentStatusDo> GetData(IQueryResult query)
-        {
             List<StudentStatusDo> statuses = new List<StudentStatusDo>();
 
             foreach (var row in query.Result.Rows)

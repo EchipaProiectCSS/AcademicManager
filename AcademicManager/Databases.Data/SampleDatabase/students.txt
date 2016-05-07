@@ -1,3 +1,5 @@
 Id, Gender, Age, FirstName, LastName, EmailAddress, LinkedStatus
 0, Male, 22, Cornel, Pantena, ionut.pantena@gmail.com, 1
-1, Female, 21, Andreea, Ilies, andreea.ilies@gmail.com, 1
+1, Female, 21, Andreea, Ilies, andreea.ilies@gmail.com, 12, Male, 12, Andrei, Gheorghe, aa@aa.com, 
+2, Male, 12, Andrei, AA, aa@aa.com, 
+3, Male, 12, Andrei, Hitra, male@aa.com, 
