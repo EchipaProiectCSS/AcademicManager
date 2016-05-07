@@ -81,11 +81,6 @@ namespace ProcessManagement.Implementations
 
         private List<StudentClassDo> GetData(IQueryResult query)
         {
-            if (query.Result.Rows.Count == 0)
-            {
-                return null;
-            }
-
             List<StudentClassDo> statuses = new List<StudentClassDo>();
 
             foreach (var row in query.Result.Rows)

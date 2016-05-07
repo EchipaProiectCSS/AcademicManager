@@ -66,6 +66,27 @@ namespace ProcessManagement.UnitTests
             Assert.Null(result);
         }
 
+        [Test]
+        public void GetStudentStatuses_NotNullResultExpected()
+        {
+            databaseMock.Setup(t => t.Query(It.IsAny<string>())).Returns(GetStatusMock);
+
+            var result = new StudentStatusRepository(databaseMock.Object).GetStudentStatuses(2);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Count > 0);
+        }
+
+        [Test]
+        public void GetStudentStatuses_NullResultExpected()
+        {
+            databaseMock.Setup(t => t.Query(It.IsAny<string>())).Returns(() => null);
+
+            var result = new StudentStatusRepository(databaseMock.Object).GetStudentStatuses(2);
+
+            Assert.Null(result);
+        }
+
         //Update() -- null result
         [Test]
         public void UpdateStatus_WithNullData_ExceptionRaisedExpected()

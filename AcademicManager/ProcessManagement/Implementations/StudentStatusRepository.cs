@@ -30,7 +30,8 @@ namespace ProcessManagement.Implementations
         {
             var query = database.Query(string.Format(Queries.GetStatusesByStudentId, studentId));
 
-            return GetStatusesFromQuery(query);
+            return query == null ? null
+                                : GetStatusesFromQuery(query);
         }
 
 
@@ -38,7 +39,8 @@ namespace ProcessManagement.Implementations
         {
             var query = database.Query(string.Format(Queries.GetStatusById, statusId));
 
-            //Note_Teacher: if we remove comments the tests will pass
+            //BUG: the comment line should be added in order to fix the bug
+            //The application should check if the result received from DB is not null in order to be processed
 
             //if (query == null)
             //{
@@ -70,8 +72,7 @@ namespace ProcessManagement.Implementations
             {
                 throw new Exception("An insert with null value can't be made!");
             }
-
-
+            
             var query = InsertQuery.Create("studentStatuses", studentStatus);
 
             database.Execute(query);
@@ -85,11 +86,6 @@ namespace ProcessManagement.Implementations
 
         private List<StudentStatusDo> GetData(IQueryResult query)
         {
-            if (query.Result.Rows.Count == 0)
-            {
-                return null;
-            }
-
             List<StudentStatusDo> statuses = new List<StudentStatusDo>();
 
             foreach (var row in query.Result.Rows)

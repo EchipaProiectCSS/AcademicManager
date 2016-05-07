@@ -7,7 +7,8 @@ namespace ProcessManagement.Helper
     {
         public static string Create(string tableName, object objectData)
         {
-            //Note_Teacher: if we remove comments the tests will pass
+            //BUG: the comment line should be added in order to fix the bug
+            //It should not be allowed to create a query with null values or null name for table
 
             //if (tableName == null || objectData == null)
             //{

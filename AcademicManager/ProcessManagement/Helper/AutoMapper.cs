@@ -11,7 +11,8 @@ namespace ProcessManagement.Helper
 
         public AutoMapper(object dataDo, Dictionary<string, string> row)
         {
-            //Note_Teacher: if we remove comments the tests will pass
+            //BUG: the comment line should be added in order to fix the bug
+            //If an empty record will be received from DB, the application should check this in order to mapp the values to an object.
 
             if (dataDo == null || row == null /*|| row.Values.Count == 0*/)
             {
@@ -32,8 +33,6 @@ namespace ProcessManagement.Helper
 
         private void SetRowValueToObject(string columnName)
         {
-            //TODO:test these scenario's
-
             var type = dataDo.GetType().GetProperty(columnName).PropertyType;
 
             CheckIfProertyMatchNamingConvention(columnName);
