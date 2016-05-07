@@ -70,16 +70,22 @@
 
             foreach (var row in table.Rows)
             {
-                var isMatch = true;
                 foreach (var conditionRow in conditionsFromQuery.Rows)
                 {
+                    var isMatch = true;
                     foreach (var pair in conditionRow.Values)
                     {
                         if (!string.IsNullOrEmpty(pair.Value) && row.Values[pair.Key] != pair.Value)
                         {
-                            isMatch = false;
-                            break;
+                            isMatch &= false;
                         }
+                        else
+                        {
+                            isMatch &= true;
+                        }
+
+                        if(isMatch)
+                        { break;}
                     }
 
                     if (isMatch)
@@ -186,7 +192,7 @@
             {
                 cond = equalityConditions[i].Split(new[] { Operators.Equal }, StringSplitOptions.RemoveEmptyEntries);
 
-                if (quantifiers[i].Equals(Operators.Or))
+                if (quantifiers[i-1].Equals(Operators.Or))
                 {
                     row = new Row();
                 }

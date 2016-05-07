@@ -47,12 +47,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DropDatabaseUnitTests.cs" />
+    <Compile Include="DropTableUnitTests.cs" />
+    <Compile Include="SelectFromTableUnitTests.cs" />
     <Compile Include="InsertIntoTableUnitTests.cs" />
     <Compile Include="CreateTableUnitTests.cs" />
     <Compile Include="FileSystemDatabaseUnitTests.cs" />
     <Compile Include="DatabaseEngineUnitTests.cs" />
     <Compile Include="DatabaseManagerUnitTests.cs" />
-    <Compile Include="DatabaseScriptsUnitTests.cs" />
     <Compile Include="QueryParserUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InstructionParserUnitTests.cs" />
