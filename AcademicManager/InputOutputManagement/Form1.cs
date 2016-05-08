@@ -16,6 +16,15 @@ namespace InputOutputManagement
         private readonly IStudentClassRepository studentClassRepository;
         private readonly IStudentStatusRepository studentStatusRepository;
 
+        public string combPromotedText = null;
+        public string txtClassText = null;
+        public string combStatusText = null;
+
+        public string firstNameText = null;
+        public string lastNameText = null;
+
+        private List<StudentView> _resultStudents = new List<StudentView>();
+
         public Form1(IDatabaseContext databaseContext)
         {
             InitializeComponent();
@@ -84,57 +93,20 @@ namespace InputOutputManagement
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            List<int> studentsToAdd = GetStudentsId();
+            _resultStudents = GetLastSearchResult();
 
-            List<int> studentsClassToAdd = new List<int>();
-            List<int> studentsStatusToAdd = new List<int>();
+            var bindingList = new BindingList<StudentView>(_resultStudents);
+            var source = new BindingSource(bindingList, null);
+            dataGridView2.DataSource = source;
+        }
+
+        public List<StudentView> GetLastSearchResult()
+        {
             List<StudentView> resultStudents = new List<StudentView>();
 
-            if (combPromoted.Text != "" || txtClass.Text != "")
-            {
-                List<StudentClassDo> studentsClass = studentClassRepository.GetAll();
-                foreach (var studClass in studentsClass)
-                {
-                    var toAdd = true;
-                    if (combPromoted.Text != "" && !combPromoted.Text.Equals(studClass.Promoted))
-                    {
-                        toAdd = false;
-                    }
-                    if (txtClass.Text != "" && !txtClass.Text.Equals(studClass.Name))
-                    {
-                        toAdd = false;
-                    }
-                    if (toAdd)
-                    {
-                        studentsClassToAdd.Add(studClass.StudentId);
-                    }
-
-                }
-            }
-
-            if (combStatus.Text != "")
-            {
-                List<StudentStatusDo> studentsStatus = studentStatusRepository.GetAll();
-                foreach (var studStatus in studentsStatus)
-                {
-                    if (combStatus.Text.Equals("Budget"))
-                    {
-                        if (studStatus.Credits > 100)
-                        {
-                            studentsStatusToAdd.Add(studStatus.StudentId);
-                        }
-
-                    }
-                    else
-                    {
-                        if (studStatus.Credits < 100)
-                        {
-                            studentsStatusToAdd.Add(studStatus.StudentId);
-                        }
-                    }
-                }
-
-            }
+            List<int> studentsToAdd = GetStudentsToAdd();
+            List<int> studentsClassToAdd = GetStudentClassToAdd();
+            List<int> studentsStatusToAdd = GetStudentsStatusToAdd();
 
             IEnumerable<int> firstresult = null;
             IEnumerable<int> lastresult = null;
@@ -155,12 +127,10 @@ namespace InputOutputManagement
                 {
                     firstresult = studentsToAdd;
                 }
-
             }
 
             if (firstresult != null && firstresult.ToList().Count > 0)
             {
-
                 if (studentsStatusToAdd.Count > 0)
                 {
                     lastresult = studentsStatusToAdd.Intersect(firstresult);
@@ -169,7 +139,6 @@ namespace InputOutputManagement
                 {
                     lastresult = firstresult;
                 }
-
             }
             else
             {
@@ -190,7 +159,7 @@ namespace InputOutputManagement
 
                     StudentView studView = new StudentView();
 
-                    if (studentsClass != null)
+                    if (studentsClass != null && studentsClass.Count > 0)
                     {
                         if (studentsClass.First().Promoted != null)
                         {
@@ -199,7 +168,7 @@ namespace InputOutputManagement
                         studView.Class = studentsClass.First().Name;
                     }
 
-                    if (studentsStatuses != null)
+                    if (studentsStatuses != null && studentsStatuses.Count > 0)
                     {
                         studView.Student_Year = studentsStatuses.First().Year.ToString();
                         studView.ECTS = studentsStatuses.First().ECTS.ToString();
@@ -213,21 +182,76 @@ namespace InputOutputManagement
                         studView.Age = student.Age;
                         studView.Gender = student.Gender;
                     }
-
-
                     resultStudents.Add(studView);
                 }
             }
-
-
-            var bindingList = new BindingList<StudentView>(resultStudents);
-            var source = new BindingSource(bindingList, null);
-            dataGridView2.DataSource = source;
-
-
+            return resultStudents;
         }
 
-        public List<int> GetStudentsId()
+        public List<int> GetStudentClassToAdd()
+        {
+            List<int> studentsClassToAdd = new List<int>();
+
+            combPromotedText = combPromoted.Text;
+            txtClassText = txtClass.Text;
+            if (combPromotedText != "" || txtClassText != "")
+            {
+                List<StudentClassDo> studentsClass = studentClassRepository.GetAll();
+                foreach (var studClass in studentsClass)
+                {
+                    var toAdd = true;
+
+                    if (combPromotedText != "" && !combPromotedText.Equals(studClass.Promoted))
+                    {
+                        toAdd = false;
+                    }
+                    if (txtClassText != "" && !txtClassText.Equals(studClass.Name))
+                    {
+                        toAdd = false;
+                    }
+                    if (toAdd)
+                    {
+                        studentsClassToAdd.Add(studClass.StudentId);
+                    }
+
+                }
+            }
+            return studentsClassToAdd;
+        }
+
+        public List<int> GetStudentsStatusToAdd()
+        {
+            List<int> studentsStatusToAdd = new List<int>();
+
+            combStatusText = combStatus.Text;
+            if (combStatusText != "")
+            {
+                List<StudentStatusDo> studentsStatus = studentStatusRepository.GetAll();
+                foreach (var studStatus in studentsStatus)
+                {
+
+                    if (combStatusText.Equals("Budget"))
+                    {
+                        if (studStatus.Credits > 100)
+                        {
+                            studentsStatusToAdd.Add(studStatus.StudentId);
+                        }
+
+                    }
+                    else
+                    {
+                        if (studStatus.Credits < 100)
+                        {
+                            studentsStatusToAdd.Add(studStatus.StudentId);
+                        }
+                    }
+                }
+
+            }
+            return studentsStatusToAdd;
+        }
+
+        public List<int> GetStudentsToAdd()
         {
             List<StudentDo> students = studentRepository.GetAll();
 
@@ -236,11 +260,14 @@ namespace InputOutputManagement
             foreach (var student in students)
             {
                 var toAdd = true;
-                if (txtFirstname.Text != "" && !txtFirstname.Text.Equals(student.FirstName))
+                lastNameText = txtLastname.Text;
+                firstNameText = txtFirstname.Text;
+
+                if (firstNameText != "" && !firstNameText.Equals(student.FirstName))
                 {
                     toAdd = false;
                 }
-                if (txtLastname.Text != "" && !txtLastname.Text.Equals(student.LastName))
+                if (lastNameText != "" && !lastNameText.Equals(student.LastName))
                 {
                     toAdd = false;
                 }
@@ -257,7 +284,6 @@ namespace InputOutputManagement
         {
             InsertStudentClass insertStudentClass = new InsertStudentClass();
             insertStudentClass.Show();
-
         }
 
         private void btnImport_Click(object sender, EventArgs e)
@@ -372,7 +398,15 @@ namespace InputOutputManagement
             }
 
         }
+
+        public List<StudentView> resultStudents
+        {
+            get { return _resultStudents; }
+
+        }
     }
+
+    
 }
 
 
