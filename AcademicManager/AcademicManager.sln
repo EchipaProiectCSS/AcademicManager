@@ -27,7 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dependencies", "Dependencie
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Documentation", "4.Documentation", "{E0F84AB3-6F80-4F34-8B39-6549A98E0BAB}"
 	ProjectSection(SolutionItems) = preProject
-		Documentation for Academic Manager.odt = Documentation for Academic Manager.odt
+		Database System module.odt = Database System module.odt
+		Process Management module.docx = Process Management module.docx
 		ReadMe.txt = ReadMe.txt
 	EndProjectSection
 EndProject
