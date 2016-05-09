@@ -26,6 +26,16 @@ namespace InputOutputManagement
             InitializeComponent();
         }
 
+        public InsertStudent(IDatabaseContext databaseContext)
+        {
+            InitializeComponent();
+
+            studentRepository = databaseContext.Student;
+            studentClassRepository = databaseContext.StudentClass;
+            studentStatusRepository = databaseContext.StudentStatus;         
+        }
+
+
         Form1 form1 = null;
 
         long studentno = 0;
@@ -59,34 +69,41 @@ namespace InputOutputManagement
 
         }
 
-        private void Insert_Click(object sender, EventArgs e)
+        public int getLastStudentId()
         {
-
             List<StudentDo> listStudents = studentRepository.GetAll();
             StudentDo student = listStudents.Last();
             int studentId = student.Id;
+            return ++studentId;
+        }
+
+        public bool insertStudent(StudentDo studentData)
+        {
+            bool isInserted = false;
+            studentRepository.Insert(studentData);
+            isInserted = true;
+
+            return isInserted;
+        }
+
+        private void Insert_Click(object sender, EventArgs e)
+        {
+
+            int nextStudentId = getLastStudentId();
             //TODO: not complete
             StudentDo studentData = new StudentDo();
-            studentData.Id = ++studentId;
+            studentData.Id = nextStudentId;
             studentData.Age = textAge.Text;
             studentData.FirstName = textFirstName.Text;
             studentData.LastName = textLastName.Text;
             studentData.Gender = textGender.Text;
             studentData.EmailAddress = textEmail.Text;
 
-            studentRepository.Insert(studentData);
+            insertStudent(studentData);
 
             List<StudentClassDo> listClassStudents = studentClassRepository.GetAll();
             StudentClassDo studentClass = listClassStudents.Last();
-            int studentClassId = student.Id;
-
-            StudentClassDo studentClassData = new StudentClassDo()
-            {
-                Id = ++studentClassId,
-                StudentId = studentId,
-
-            };
-
+ 
             //studentClassRepository.Insert(studentClassData);
 
             MessageBox.Show("Done !");
