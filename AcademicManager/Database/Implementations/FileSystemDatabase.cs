@@ -2,17 +2,24 @@
 {
     using System;
     using System.Linq;
-    using Interfaces.Internal;
-    using Internal;
+
+    using Database.Implementations.Internal;
+    using Database.Interfaces.Internal;
 
     public class FileSystemDatabase : Database
     {
         private readonly IDatabaseEngine databaseEngine;
+
         private readonly ILoader fileLoader;
+
         private readonly IInstructionParser instructionParser;
+
         private readonly IQueryParser queryParser;
 
-        public FileSystemDatabase(ILoader loader, IInstructionParser instructionParser, IQueryParser queryParser,
+        public FileSystemDatabase(
+            ILoader loader, 
+            IInstructionParser instructionParser, 
+            IQueryParser queryParser, 
             IDatabaseEngine databaseEngine)
         {
             if (loader == null)
