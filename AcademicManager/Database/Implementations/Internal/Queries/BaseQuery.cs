@@ -1,7 +1,7 @@
 ﻿namespace Database.Implementations.Internal.Queries
 {
     using System;
-
+    using System.Diagnostics;
     using global::Database.Implementations.Internal.Utility;
     using global::Database.Interfaces;
     using global::Database.Interfaces.Internal;
@@ -12,6 +12,11 @@
 
         protected BaseQuery(string query)
         {
+
+            //todo: assertion
+            Debug.Assert(query.EndsWith(Instructions.StatementTerminator.ToString(), StringComparison.Ordinal),
+                string.Format("An query must end with statement terminator: {0}",
+                    Instructions.StatementTerminator));
             if (string.IsNullOrWhiteSpace(query))
             {
                 throw new ArgumentNullException("query", "Must provide query body.");

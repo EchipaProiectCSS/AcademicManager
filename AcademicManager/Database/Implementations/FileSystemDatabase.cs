@@ -1,10 +1,10 @@
 ﻿namespace Database.Implementations
 {
     using System;
+    using System.Diagnostics;
     using System.Linq;
-
-    using Database.Implementations.Internal;
-    using Database.Interfaces.Internal;
+    using Interfaces.Internal;
+    using Internal;
 
     public class FileSystemDatabase : Database
     {
@@ -17,11 +17,17 @@
         private readonly IQueryParser queryParser;
 
         public FileSystemDatabase(
-            ILoader loader, 
-            IInstructionParser instructionParser, 
-            IQueryParser queryParser, 
+            ILoader loader,
+            IInstructionParser instructionParser,
+            IQueryParser queryParser,
             IDatabaseEngine databaseEngine)
         {
+            //todo: assertion
+            Debug.Assert(loader != null, "An instance of loader must be provided.");
+            Debug.Assert(instructionParser != null, "An instance of instructions parse must be provided.");
+            Debug.Assert(queryParser != null, "An instance of query parser must be provided.");
+            Debug.Assert(databaseEngine != null, "An instance of database engine must be provided.");
+
             if (loader == null)
             {
                 throw new ArgumentNullException("loader", "Must provide an instance of ILoader.");

@@ -1,5 +1,6 @@
 ﻿namespace Database.Implementations
 {
+    using System.Diagnostics;
     using System.IO;
     using Interfaces;
     using Internal;
@@ -25,7 +26,9 @@
                 ConnectionString = ExtractConnectionString(filePath),
                 Name = ExtractDatabaseName(filePath)
             };
-
+            //todo: assertion
+            Debug.Assert(!string.IsNullOrWhiteSpace(db.ConnectionString),
+                "An instance of database must always have a connection string.");
             return db;
         }
 
@@ -52,6 +55,10 @@
                 throw new IOException(
                     string.Format("The {0} database already exists at {1}.", db.Name, db.ConnectionString));
             }
+
+            //todo: assertion
+            Debug.Assert(!string.IsNullOrWhiteSpace(db.ConnectionString),
+                "An instance of database must always have a connection string.");
 
             return db;
         }

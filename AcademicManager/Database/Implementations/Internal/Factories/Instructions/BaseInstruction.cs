@@ -1,16 +1,20 @@
 ﻿namespace Database.Implementations.Internal.Instructions
 {
     using System;
+    using System.Diagnostics;
     using Interfaces;
     using Interfaces.Internal;
     using Utility;
 
     public abstract class BaseInstruction : IScriptInstruction
     {
-        private readonly string instructionContent;
-
         protected BaseInstruction(string instruction)
         {
+            //todo: assertion
+            Debug.Assert(instruction.EndsWith(Instructions.StatementTerminator.ToString(), StringComparison.Ordinal),
+                string.Format("An instruction must end with statement terminator: {0}",
+                    Instructions.StatementTerminator));
+
             if (string.IsNullOrWhiteSpace(instruction))
             {
                 throw new ArgumentNullException("instruction",
@@ -22,13 +26,10 @@
                 throw new ArgumentException("Instruction must end with ';'.");
             }
 
-            instructionContent = instruction;
+            Instruction = instruction;
         }
 
-        public string Instruction
-        {
-            get { return instructionContent; }
-        }
+        public string Instruction { get; }
 
         public IDatabase Database { get; set; }
         public abstract void Run();
