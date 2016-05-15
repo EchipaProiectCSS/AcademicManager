@@ -10,16 +10,16 @@
     {
         protected BaseInstruction(string instruction)
         {
-            //todo: assertion
-            Debug.Assert(instruction.EndsWith(Instructions.StatementTerminator.ToString(), StringComparison.Ordinal),
-                string.Format("An instruction must end with statement terminator: {0}",
-                    Instructions.StatementTerminator));
-
             if (string.IsNullOrWhiteSpace(instruction))
             {
                 throw new ArgumentNullException("instruction",
                     "Must provide instruction body.");
             }
+
+            //todo: assertion
+            Debug.Assert(instruction.EndsWith(Instructions.StatementTerminator.ToString(), StringComparison.Ordinal),
+                string.Format("An instruction must end with statement terminator: {0}",
+                    Instructions.StatementTerminator));
 
             if (!instruction.EndsWith(Instructions.StatementTerminator.ToString(), StringComparison.OrdinalIgnoreCase))
             {

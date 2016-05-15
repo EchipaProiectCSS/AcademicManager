@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -12,6 +13,8 @@
     {
         public DeleteInstruction(string instruction) : base(instruction)
         {
+            //todo: assertion
+            Debug.Assert(!instruction.Contains(Instructions.From), string.Format("delete instruction must always use {0} keyword specify the table from which to delete", Instructions.From));
             if (!instruction.Contains(Instructions.From))
             {
                 throw new ArgumentException("Must specify the table from where to delete.");

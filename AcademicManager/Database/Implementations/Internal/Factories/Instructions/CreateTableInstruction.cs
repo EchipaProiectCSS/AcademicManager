@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using Utility;
@@ -10,6 +11,9 @@
     {
         public CreateTableInstruction(string instruction) : base(instruction)
         {
+            //todo: assertion
+            Debug.Assert(!instruction.Contains('(') || !instruction.Contains(')'), "create table instruction must specify the list of columns between '(' and ')'");
+
             if (!instruction.Contains('(') || !instruction.Contains(')'))
             {
                 throw new ArgumentException("The list of columns must be enclosed within '(' and ')'");

@@ -2,41 +2,33 @@
 {
     using System;
     using System.Diagnostics;
-    using global::Database.Implementations.Internal.Utility;
-    using global::Database.Interfaces;
-    using global::Database.Interfaces.Internal;
+    using Interfaces;
+    using Interfaces.Internal;
+    using Utility;
 
     public abstract class BaseQuery : IQueryInstruction
     {
-        private readonly string queryContent;
-
         protected BaseQuery(string query)
         {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                throw new ArgumentNullException("query", "Must provide query body.");
+            }
 
             //todo: assertion
             Debug.Assert(query.EndsWith(Instructions.StatementTerminator.ToString(), StringComparison.Ordinal),
                 string.Format("An query must end with statement terminator: {0}",
                     Instructions.StatementTerminator));
-            if (string.IsNullOrWhiteSpace(query))
-            {
-                throw new ArgumentNullException("query", "Must provide query body.");
-            }
 
             if (!query.EndsWith(Instructions.StatementTerminator.ToString(), StringComparison.OrdinalIgnoreCase))
             {
                 throw new ArgumentException("query", "Query must end with ';'.");
             }
 
-            queryContent = query;
+            Query = query;
         }
 
-        public string Query
-        {
-            get
-            {
-                return queryContent;
-            }
-        }
+        public string Query { get; }
 
         public IDatabase Database { get; set; }
 
