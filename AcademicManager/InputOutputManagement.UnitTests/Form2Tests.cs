@@ -30,6 +30,7 @@
             Assert.IsTrue(nextStudentId == 3);
         }
 
+        [Test]
         public void test_InsertStudent()
         {
             databaseContextMock.Setup(t => t.Student.GetAll()).Returns(GetStudentData);
@@ -49,7 +50,7 @@
             Assert.IsTrue(formInsertStudent.insertStudent(newStudent));
         }
 
-        public List<StudentDo> GetStudentData()
+        private List<StudentDo> GetStudentData()
         {
             return new List<StudentDo>()
                        {
