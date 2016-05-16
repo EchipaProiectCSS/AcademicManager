@@ -92,6 +92,9 @@
 
         public override IQueryResult Query(string scriptBody)
         {
+            //todo: assertion - pre
+            Debug.Assert(string.IsNullOrEmpty(scriptBody), "The script should not be empty in order to be execute on Database");
+
             var query = queryParser.Parse(scriptBody).Single();
 
             return databaseEngine.Query(query);

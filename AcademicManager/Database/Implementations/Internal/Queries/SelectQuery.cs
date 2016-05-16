@@ -29,6 +29,9 @@
         {
             var result = new SelectResult();
 
+            //todo: assertion - pre
+            Debug.Assert(Database == null, "A Database should be selected in order to execute any operation.");
+
             if (Database == null)
             {
                 throw new ArgumentNullException(string.Empty, "Must set a database where the select is to be executed.");
@@ -40,12 +43,18 @@
             {
                 throw new TableAlreadyExistsException(
                     string.Format(
-                        "The database {0} does not contain a table with the name {1}", 
-                        Database.Name, 
+                        "The database {0} does not contain a table with the name {1}",
+                        Database.Name,
                         tableName));
             }
 
             var columnNamesFromSelect = ExtractColumnNamesFromQuery();
+
+            var columns = string.Join("\t", columnNamesFromSelect.Cast<string>().ToArray());
+
+            //todo: assertion - post
+            Debug.Assert(columnNamesFromSelect.Count > 0, $"The columns used in select operation are {columns}");
+
             var conditionsFromQuery = ExtractConditionsFromQuery();
 
             var table = LoadTable(tableName);
@@ -88,8 +97,8 @@
                             isMatch &= true;
                         }
 
-                        if(isMatch)
-                        { break;}
+                        if (isMatch)
+                        { break; }
                     }
 
                     if (isMatch)
@@ -109,6 +118,10 @@
             var result = new Table();
 
             var tableFilePath = Path.Combine(Database.ConnectionString, Database.Name, tableName + ".txt");
+
+            //todo: assertion - post
+            Debug.Assert(string.IsNullOrEmpty(tableFilePath), string.Format("The table {0} is not found in database", tableName));
+
             var tableLines = File.ReadAllLines(tableFilePath).ToList();
             var headerLine = tableLines.First();
 
@@ -120,10 +133,10 @@
                 columns.Select(
                     c =>
                     new Column
-                        {
-                            IsPrimaryKey = c.ToLower().Contains(Instructions.PrimaryKey), 
-                            Name = c.Replace(Instructions.PrimaryKey, string.Empty).Trim()
-                        }).ToList();
+                    {
+                        IsPrimaryKey = c.ToLower().Contains(Instructions.PrimaryKey),
+                        Name = c.Replace(Instructions.PrimaryKey, string.Empty).Trim()
+                    }).ToList();
 
             foreach (var line in tableLines)
             {
@@ -196,7 +209,7 @@
             {
                 cond = equalityConditions[i].Split(new[] { Operators.Equal }, StringSplitOptions.RemoveEmptyEntries);
 
-                if (quantifiers[i-1].Equals(Operators.Or))
+                if (quantifiers[i - 1].Equals(Operators.Or))
                 {
                     row = new Row();
                 }

@@ -1,4 +1,6 @@
-﻿namespace Database.Implementations.Internal.Parsers
+﻿using System.Diagnostics;
+
+namespace Database.Implementations.Internal.Parsers
 {
     using System;
     using System.Collections.Generic;
@@ -11,6 +13,10 @@
         public ICollection<IQueryInstruction> Parse(string scriptBody)
         {
             var oneLineStringIntructions = CleanScript(scriptBody);
+
+            //todo: assertion - post
+            Debug.Assert(columnNamesFromSelect.Count > 0, $"The columns used in select operation are {columns}");
+
             return ConvertToInstructions(oneLineStringIntructions);
         }
 
