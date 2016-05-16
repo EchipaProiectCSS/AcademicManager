@@ -2,12 +2,23 @@
 {
     using System;
     using System.Diagnostics;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using Interfaces.Internal;
     using Internal;
 
     public class FileSystemDatabase : Database
     {
+
+        [ContractInvariantMethod]
+        protected void ClassInvariant()
+        {
+            Contract.Invariant(databaseEngine != null);
+            Contract.Invariant(fileLoader != null);
+            Contract.Invariant(queryParser != null);
+            Contract.Invariant(instructionParser != null);
+        }
+
         private readonly IDatabaseEngine databaseEngine;
 
         private readonly ILoader fileLoader;

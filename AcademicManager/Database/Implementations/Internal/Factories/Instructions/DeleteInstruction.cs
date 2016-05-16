@@ -8,6 +8,7 @@
     using System.Text.RegularExpressions;
     using Domain;
     using Utility;
+    using System.Diagnostics.Contracts;
 
     public class DeleteInstruction : BaseInstruction
     {
@@ -67,6 +68,9 @@
                         matchesTable.Rows.Add(row);
                         break;
                     }
+
+                    // ADD CONTRACT
+                    Contract.Ensures(isMatch == true && matchesTable.Rows.Count > 0);
                 }
             }
 
@@ -165,6 +169,9 @@
                              Instructions.Where.Length;
 
             var length = queryCopy.IndexOf(Instructions.StatementTerminator) - startIndex;
+
+            // ASSERT ADDED
+            Debug.Assert(length > 0, "The lenght of delete conditions must be greater than 0");
 
             queryCopy = queryCopy.Substring(startIndex, length);
 

@@ -51,6 +51,9 @@
                     "The number of values must be the same with the number of columns specified.");
             }
 
+            // ADD ASSERT
+            Debug.Assert(columnNamesFromInsert.Count != valuesFromInsert.Count, "The number of values must be the same with the number of columns specified.");
+
             var tableHeader = LoadTableHeader(tableName);
 
             foreach (var columnName in columnNamesFromInsert)
@@ -109,6 +112,8 @@
             var tableFilePath = Path.Combine(Database.ConnectionString, Database.Name, tableName + ".txt");
             var headerLine = File.ReadLines(tableFilePath).First();
 
+            // ADD ASSERT
+            Debug.Assert(headerLine != null , "The table must have a header line");
             return headerLine.Split(',').Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).ToList();
         }
 

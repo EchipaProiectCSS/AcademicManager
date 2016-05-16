@@ -7,11 +7,15 @@
     using System.Text.RegularExpressions;
     using Domain;
     using Utility;
+    using System.Diagnostics;
+    using System.Diagnostics.Contracts;
 
     public class UpdateInstruction : BaseInstruction
     {
         public UpdateInstruction(string instruction) : base(instruction)
         {
+            //todo: assertion
+            Debug.Assert(!instruction.Contains(Instructions.Set), "update instruction must specify at least a set with a new value to be changed");
         }
 
         public override void Run()
@@ -86,11 +90,18 @@
             if (queryCopy.Contains(Instructions.Where))
             {
                 length = queryCopy.IndexOf(Instructions.Where, StringComparison.OrdinalIgnoreCase) - startIndex;
+
+                //ADD ASSERT
+                Debug.Assert(length < 0, "WHERE instruction must be after SET instruction");
+                
             }
             else
             {
                 length = queryCopy.IndexOf(Instructions.StatementTerminator) - startIndex;
             }
+
+            // ADD CONTRACT
+            Contract.Ensures(length > 0);
 
             queryCopy = queryCopy.Substring(startIndex, length);
 

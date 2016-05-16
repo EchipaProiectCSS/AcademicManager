@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Diagnostics;
 
     using global::Database.Implementations.Internal.Domain;
     using global::Database.Implementations.Internal.Utility;
@@ -15,6 +16,9 @@
         public SelectQuery(string query)
             : base(query)
         {
+
+            //ADDED ASSERTION
+            Debug.Assert(query == null, "Query must not be NULL");
             if (!query.Contains(Instructions.From))
             {
                 throw new ArgumentException("Must specify the table from where to select.");
