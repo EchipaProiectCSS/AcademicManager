@@ -15,7 +15,7 @@ namespace Database.Implementations.Internal.Parsers
             var oneLineStringIntructions = CleanScript(scriptBody);
 
             //todo: assertion - post
-            Debug.Assert(columnNamesFromSelect.Count > 0, $"The columns used in select operation are {columns}");
+            Debug.Assert(string.IsNullOrEmpty(scriptBody), $"The script should not be empty in order to be executed on Database");
 
             return ConvertToInstructions(oneLineStringIntructions);
         }

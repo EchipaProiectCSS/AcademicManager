@@ -91,6 +91,9 @@
 
         private void WriteValuesToTable(string tableName, List<string> values)
         {
+            //todo: assertion
+            Debug.Assert(values.Count == 0, string.Format("A list of values should in provided in order to be inserted in {0} table", tableName));
+
             var tableFilePath = Path.Combine(Database.ConnectionString, Database.Name, tableName + ".txt");
 
             if (!File.Exists(tableFilePath))
@@ -104,7 +107,7 @@
                 values[i] = values[i].Trim().Replace("'", string.Empty);
             }
 
-            File.AppendAllLines(tableFilePath, new List<string> {string.Join(", ", values)});
+            File.AppendAllLines(tableFilePath, new List<string> { string.Join(", ", values) });
         }
 
         private List<string> LoadTableHeader(string tableName)
@@ -113,7 +116,7 @@
             var headerLine = File.ReadLines(tableFilePath).First();
 
             // ADD ASSERT
-            Debug.Assert(headerLine != null , "The table must have a header line");
+            Debug.Assert(headerLine != null, "The table must have a header line");
             return headerLine.Split(',').Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).ToList();
         }
 
