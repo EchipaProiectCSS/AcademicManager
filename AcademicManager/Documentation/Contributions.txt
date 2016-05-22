@@ -21,5 +21,12 @@ Contribution:
 	wrote documentation on the process management module, covering phases 1, 2 and 3,
 	helped other team members when needed.
 
-
+Name: Colban Mihai
+Contribution:
+•    wrote documentation on the Input Output Management module, covering phases 1, 2 and 3,
+•    worked on application interface
+•    implemented the import/export file methods for the Input Output Management module,
+•    implemented unit tests for the Input Output Management module,
+•    added precondition assertions in the database module,
+•    helped other team members when needed.
 
