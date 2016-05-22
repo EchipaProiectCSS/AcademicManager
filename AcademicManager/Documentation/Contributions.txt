@@ -30,3 +30,12 @@ Contribution:
 •    added precondition assertions in the database module,
 •    helped other team members when needed.
 
+Name: Merticaru - Rafael Cristian - Ovidiu
+Contribution:
+•    wrote documentation on the Input Output Management module, covering phases 1, 2 and 3,
+•	   worked on application interface,
+•	   implemented the search, insert student and insert student class methods for the Input Output Management module,
+•	   added precondition and postconditions assertions in the database module,
+•	   helped other team members when needed.
+
+
