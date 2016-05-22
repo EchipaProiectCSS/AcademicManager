@@ -1,0 +1,25 @@
+CONTRIBUTIONS: Note: for a more detailed overview on the contributions please go to: https://github.com/EchipaProiectCSS/AcademicManager/graphs/contributors
+
+Name: Hociung Florin
+Contribution:
+•	created the shared Git Hub repository for the team,
+•	added solution skeleton with the modules and modules unit tests projects,
+•	added interfaces and sample for the supported scripting language to facilitate the other team members to work on their modules that depended on the database module,
+•	implemented the database module,
+•	implemented unit tests for the database module,
+•	added precondition assertions in the database module,
+•	wrote documentation on the database module, covering phases 1, 2 and 3,
+•	helped other team members when needed.
+
+
+Name: Gheorghita Cornel
+Contribution:
+	added Dependencies project for holding in one place all the dependencies that should be injected in any class and set all the mappings between classes and interfaces needed on the solution through Ninject framework
+	implemented the Process Management module,
+	implemented unit tests for the Process Management module,
+	added precondition and postcondition assertions in the database module,
+	wrote documentation on the process management module, covering phases 1, 2 and 3,
+	helped other team members when needed.
+
+
+
