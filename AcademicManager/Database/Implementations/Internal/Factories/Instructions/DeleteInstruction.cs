@@ -69,7 +69,7 @@
                         break;
                     }
 
-                    // ADD CONTRACT
+                    //todo: ADD CONTRACT
                     Contract.Ensures(isMatch == true && matchesTable.Rows.Count > 0);
                 }
             }

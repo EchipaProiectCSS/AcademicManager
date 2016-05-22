@@ -91,7 +91,7 @@
             {
                 length = queryCopy.IndexOf(Instructions.Where, StringComparison.OrdinalIgnoreCase) - startIndex;
 
-                //ADD ASSERT
+                // tODO: ADD ASSERT
                 Debug.Assert(length < 0, "WHERE instruction must be after SET instruction");
                 
             }
@@ -100,7 +100,7 @@
                 length = queryCopy.IndexOf(Instructions.StatementTerminator) - startIndex;
             }
 
-            // ADD CONTRACT
+            //todo: ADD CONTRACT
             Contract.Ensures(length > 0);
 
             queryCopy = queryCopy.Substring(startIndex, length);

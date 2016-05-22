@@ -13,6 +13,7 @@
         [ContractInvariantMethod]
         protected void ClassInvariant()
         {
+            // TODO:  assert invariant
             Contract.Invariant(databaseEngine != null);
             Contract.Invariant(fileLoader != null);
             Contract.Invariant(queryParser != null);
